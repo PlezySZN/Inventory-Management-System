@@ -6,37 +6,65 @@
 
     using std::vector, std::string, std::cout, std::cin, std::endl;
 
-    struct product{
+    struct Product{
         string idNum;
         string name;
         string category;
         double price;
         double stock;
-    };
+    } ;
+        //Keven Paulino Ferrer
+    void addProduct(vector <Product> &userProducts) {
+        Product newProduct;
+        char continuar;
+        do{
+            cout << "\n============================================\n";
+            cout << "========Inventory Management System=========\n";
+            cout << "=============Adding New Product=============\n";    
+            cout << "Enter Identification Number: ";
+            cin>> newProduct.idNum;
+            cout << "Enter Name of the Product: ";
+            cin>> newProduct.name;
+            cout << "Enter the category (foods, drinks, etc...): ";
+            cin>> newProduct.category;
 
-    void addProduct() {
+            do {
+                cout << "Enter the Price of the Product:";
+                cin>> newProduct.price;
+
+                if (newProduct.price<0) {
+                    cout << "\n===========================================\n";
+                    cout << "=====ERROR: Price Can't be Less than 0===== \n";
+                    cout << "===========================================\n";
+                }
+            } while (newProduct.price<0);
+
+            do {
+                cout << "Enter the Amount in Stock:";
+                cin>> newProduct.stock;
+                if (newProduct.stock<0) {
+                    cout << "\n============================================\n";
+                    cout << "======ERROR: Stock Can't be Less tha 0====== \n";
+                    cout << "============================================\n";
+                }
+            } while (newProduct.stock<0);
+
+            userProducts.push_back(newProduct);  
+            
+            cout<< "Do You Wish to Continue Adding Products (Y/N)";
+            cin >> continuar;
+            continuar = toupper(continuar); 
+            if (continuar=='N') {
+                break;
+            } 
+        } while (continuar!='N' && continuar!='Y');     
     }
-
-    void deleteProduct() {
-    }
-
-    void updateProduct() {
-    }
-
-    int searchProduct() {
-        return 0;
-    }
-
-    void printInventory() {
-    }
-
 
     int main () {
         int menuChoice;
-        vector <product> userProduct(1);
-
-        do {    
-            cout << "\n===========================================\n";
+        vector <Product> userProducts;
+        do {
+            cout << "\n============================================\n";
             cout << "========Inventory Management System=========\n";
             cout << "===============Inventory Menu===============\n";
             cout << "1. Add a new product\n";
@@ -47,7 +75,12 @@
             cout << "6. Exit\n";
             cout << "Enter your choice: ";
             cin >> menuChoice;
-
-        } while (menuChoice != 6);
+            switch (menuChoice){
+            case 1:
+                addProduct(userProducts);
+                break;
+            }
+            
+        } while(menuChoice !=6);
         return 0;
     }
