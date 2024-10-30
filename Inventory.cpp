@@ -57,7 +57,7 @@
             if (continuar=='N') {
                 break;
             } 
-        } while (continuar!='N' && continuar!='Y');     
+        } while (continuar=='Y');     
     }
 
     int main () {
