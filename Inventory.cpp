@@ -278,7 +278,7 @@ void searchProduct(vector<Product> &userProducts)
                 cout << "=======================================\n";
             }
         }
-        if (searchChoice == 2) // if search by category
+        else if (searchChoice == 2) // if search by category
         {
             string userCategory;
             cout << "Enter Category: ";
@@ -298,7 +298,7 @@ void searchProduct(vector<Product> &userProducts)
                 cout << "=============================================\n";
             }
         }
-        else // if search by Name
+        else if (searchChoice == 3) // if search by Name
         {
             string userName;
             cout << "Enter Name: ";
