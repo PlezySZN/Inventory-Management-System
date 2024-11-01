@@ -321,29 +321,21 @@ void searchProduct(vector<Product> &userProducts)
     };
 
     int searchChoice;
-
-    cout << "\n============================================\n";
-    cout << "========Inventory Management System=========\n";
-    cout << "================Search Menu=================\n";
-    cout << "1. Search by ID \n";
-    cout << "2. Search by category \n";
-    cout << "3. Search by Name \n";
-    cout << "Enter your choice: ";
-    cin >> searchChoice;
-
-    switch (searchChoice)
+    do
     {
-    case 1: // Id
-        searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
-        break;
-    case 2: // category
-        searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
-        break;
-    case 3: // Name
-        searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
 
-        break;
-    }
+        cout << "\n============================================\n";
+        cout << "========Inventory Management System=========\n";
+        cout << "================Search Menu=================\n";
+        cout << "1. Search by ID \n";
+        cout << "2. Search by category \n";
+        cout << "3. Search by Name \n";
+        cout << "Enter your choice: ";
+        cin >> searchChoice;
+
+    } while (searchChoice < 1 && searchChoice > 3);
+
+    searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
 
     for (Product Search : searchProduct)
     {
