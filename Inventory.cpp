@@ -244,71 +244,71 @@ void updateProduct(vector<Product> &userProducts)
     }
 }
 int searchProduct()
-    {
-        return 0;
-    }
-    void printInventory(vector<Product> & userProducts)
+{
+    return 0;
+}
+void printInventory(vector<Product> &userProducts)
+{
+
+    std::cout << std::left << std::setw(10) << "ID"
+              << std::setw(10) << "Name"
+              << std::setw(15) << "Category"
+              << std::setw(15) << "Stock"
+              << std::setw(15) << "Price"
+              << std::endl;
+
+    for (auto &product : userProducts)
     {
 
-        std::cout << std::left << std::setw(10) << "ID"
-                  << std::setw(10) << "Name"
-                  << std::setw(15) << "Category"
-                  << std::setw(15) << "Stock"
-                  << std::setw(15) << "Price"
+        std::cout << std::setw(10) << product.idNum
+                  << std::setw(10) << product.name
+                  << std::setw(15) << product.category
+                  << std::setw(15) << product.stock
+                  << std::setw(0) << "$"
+                  << std::setw(20) << std::fixed << std::setprecision(2)
+                  << product.price
                   << std::endl;
-
-        for (auto &product : userProducts)
-        {
-
-            std::cout << std::setw(10) << product.idNum
-                      << std::setw(10) << product.name
-                      << std::setw(15) << product.category
-                      << std::setw(15) << product.stock
-                      << std::setw(0) << "$"
-                      << std::setw(20) << std::fixed << std::setprecision(2)
-                      << product.price
-                      << std::endl;
-        }
     }
-    int main()
+}
+int main()
+{
+    int menuChoice;
+    vector<Product> userProducts;
+    do
     {
-        int menuChoice;
-        vector<Product> userProducts;
-        do
+        cout << "\n============================================\n";
+        cout << "========Inventory Management System=========\n";
+        cout << "===============Inventory Menu===============\n";
+        cout << "1. Add a new product\n";
+        cout << "2. Delete a product\n";
+        cout << "3. Update a product\n";
+        cout << "4. Search for a product\n";
+        cout << "5. Print inventory\n";
+        cout << "6. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> menuChoice;
+        cin.ignore();
+
+        switch (menuChoice)
         {
-            cout << "\n============================================\n";
-            cout << "========Inventory Management System=========\n";
-            cout << "===============Inventory Menu===============\n";
-            cout << "1. Add a new product\n";
-            cout << "2. Delete a product\n";
-            cout << "3. Update a product\n";
-            cout << "4. Search for a product\n";
-            cout << "5. Print inventory\n";
-            cout << "6. Exit\n";
-            cout << "Enter your choice: ";
-            cin >> menuChoice;
-            cin.ignore();
 
-            switch (menuChoice)
-            {
+        case 1:
+            addProduct(userProducts);
+            break;
+        case 2:
+            deleteProduct();
+            break;
+        case 3:
+            updateProduct(userProducts);
+            break;
+        case 4:
+            searchProduct();
+            break;
+        case 5:
+            printInventory(userProducts);
+            break;
+        }
 
-            case 1:
-                addProduct(userProducts);
-                break;
-            case 2:
-                deleteProduct();
-                break;
-            case 3:
-                updateProduct(userProducts);
-                break;
-            case 4:
-                searchProduct();
-                break;
-            case 5:
-                printInventory(userProducts);
-                break;
-            }
-
-        } while (menuChoice != 6);
-        return 0;
-    }
+    } while (menuChoice != 6);
+    return 0;
+}
