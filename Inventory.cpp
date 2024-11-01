@@ -333,7 +333,7 @@ void searchProduct(vector<Product> &userProducts)
         cout << "Enter your choice: ";
         cin >> searchChoice;
 
-    } while (searchChoice < 1 && searchChoice > 3);
+    } while (searchChoice < 1 || searchChoice > 3);
 
     searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
 
