@@ -30,10 +30,13 @@
                     cout <<"\n===========================================\n";
                     cout << "=====ERROR: ID Can't be more than 9999=====\n";
                     cout <<"===========================================\n";
+                    continue;
+
                     } else if (newProduct.idNum.length() < 4) {
                         cout << "\n============================================\n";
                         cout << "======ERROR: ID Can't be less than 1000====== \n";
                         cout << "============================================\n";
+                        continue;
                 }
 
             } while (newProduct.idNum.length() < 4);
@@ -193,12 +196,25 @@
     }
 
     void printInventory(vector <Product> &userProducts) {
+
+            std::cout << std::left << std::setw(10) << "ID" 
+            << std::setw(10) << "Name" 
+            << std::setw(15) << "Category" 
+            << std::setw(15) << "Stock" 
+            << std::setw(15) << "Price" 
+            << std::endl;
+
         for (auto &product : userProducts) {
-            cout << "\n" << "ID: " << product.idNum << "\n";
-            cout << "Name: " << product.name << "\n";
-            cout << "Category: " << product.category << "\n";
-            cout << "Stock: " << product.stock << "\n";
-            cout << "Price: $" << std::fixed << std::setprecision(2) << product.price << "\n";
+            
+            std::cout << std::setw(10) << product.idNum 
+            << std::setw(10) << product.name 
+            << std::setw(15) << product.category 
+            << std::setw(15) << product.stock 
+            << std::setw(0)  << "$" 
+            << std::setw(20) << std::fixed << std::setprecision(2) 
+            << product.price
+            << std::endl;
+
         }   
     }
     int main () {
