@@ -57,11 +57,11 @@ void addProduct(vector<Product> &userProducts)
             cout << "Enter the Price of the Product:";
             cin >> newProduct.price;
 
-            if (!(cin, newProduct.price))
+            if ((!cin))
             {
-                cout << "\n===========================================\n";
+                cout << "\n=======================================================\n";
                 cout << "=====ERROR: Invalid input. Please Enter a number ===== \n";
-                cout << "===========================================\n";
+                cout << "=======================================================\n";
 
                 cin.clear();
                 cin.ignore();
@@ -81,11 +81,11 @@ void addProduct(vector<Product> &userProducts)
             cout << "Enter the Amount in Stock:";
             cin >> newProduct.stock;
 
-            if (!(cin, newProduct.price))
+            if ((!cin))
             {
-                cout << "\n===========================================\n";
+                cout << "\n=======================================================\n";
                 cout << "=====ERROR: Invalid input. Please Enter a number ===== \n";
-                cout << "===========================================\n";
+                cout << "=======================================================\n";
 
                 cin.clear();
                 cin.ignore();
@@ -122,18 +122,23 @@ void deleteProduct()
 // Harrys Santiago Santana
 void updateProduct(vector<Product> &userProducts)
 {
+    // Create a variable to search if id is = to id on userProducts
     string id;
+    int userChoice;
 
+    // Prompt user to enter the id of the product they want to update
     cout << "\n===========================================\n";
     cout << "========Inventory Management System========\n";
     cout << "==============Updating Product==============\n";
     cout << "Enter Product ID to update: ";
     cin >> id;
-    cin.ignore();
+    cin.ignore(); // Clean Buffer
 
-    auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &matchedProduct)
-                      { return matchedProduct.idNum == id; });
+    // Search the product in vector by ID
+    auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &userProduct)
+                      { return userProduct.idNum == id; });
 
+    // If product is found, proceed to update its details
     if (it != userProducts.end())
     {
         string newName;
@@ -141,71 +146,94 @@ void updateProduct(vector<Product> &userProducts)
         double newStock;
         double newPrice;
 
+        // Show current product details
         cout << "===========================================\n";
         cout << "Current product name: " << it->name << endl;
-        cout << "============================================\n\n";
-        cout << "Enter product name to update: ";
-        std::getline(cin, newName);
+        cout << "============================================\n";
+        cout << "1. Update product \n";
+        cout << "2. Don't make changes.\n\n";
+        cout << "Enter your choice: ";
+        cin >> userChoice;
+        cin.ignore();
 
-        if (!newName.empty())
+        if (userChoice == 1)
         {
+            cout << "Enter product name to update: ";
+            std::getline(cin, newName);
             it->name = newName;
         }
-        else
+        else if (userChoice == 2)
         {
             cout << "No changes made." << endl;
         }
 
+        // Show current product details
         cout << "===========================================\n";
         cout << "Current product category: " << it->category << endl;
-        cout << "============================================\n\n";
-        cout << "Enter product category to update: ";
-        std::getline(cin, newCategory);
+        cout << "============================================\n";
+        cout << "1. Update product \n";
+        cout << "2. Don't make changes.\n\n";
+        cout << "Enter your choice: ";
+        cin >> userChoice;
+        cin.ignore();
 
-        if (!newCategory.empty())
+        if (userChoice == 1)
         {
+            cout << "Enter product category to update: ";
+            std::getline(cin, newCategory);
             it->category = newCategory;
         }
-        else
+        else if (userChoice == 2)
         {
             cout << "No changes made." << endl;
         }
 
+        // Show current product details
         cout << "===========================================\n";
         cout << "Current price: $" << std::fixed << std::setprecision(2) << it->price << endl;
         cout << "============================================\n\n";
-        cout << "Enter price to update: ";
-        cin >> newPrice;
+        cout << "1. Update product \n";
+        cout << "2. Don't make changes.\n\n";
+        cout << "Enter your choice: ";
+        cin >> userChoice;
+        cin.ignore();
 
-        if (newPrice < 0)
+        if (userChoice == 1)
         {
-            cout << "\n=======================================\n";
-            cout << "=====ERROR: Price Can't be Less 0===== \n";
-            cout << "=========================================";
+            do
+            {
+                cout << "Enter product price to update: ";
+                cin >> newPrice;
+                it->price = newPrice;
+            } while ((!cin) || newPrice < 0);
+        }
+        else if (userChoice == 2)
+        {
+            cout << "No changes made." << endl;
         }
 
-        if (!newPrice < 0)
-        {
-            it->price = newPrice;
-        }
-
+        // Show current product details
         cout << "===========================================\n";
         cout << "Current stock: " << it->stock << endl;
         cout << "============================================\n\n";
-        cout << "Enter stock to update: ";
-        cin >> newStock;
-        it->stock = newStock;
+        cout << "1. Update product \n";
+        cout << "2. Don't make changes.\n\n";
+        cout << "Enter your choice: ";
+        cin >> userChoice;
+        cin.ignore();
 
-        if (newStock < 0)
+        if (userChoice == 1)
         {
-            cout << "\n=======================================\n";
-            cout << "=====ERROR: Stock Can't be Less 0===== \n";
-            cout << "=========================================";
+            do
+            {
+                cout << "Enter product stock to update: ";
+                cin >> newStock;
+                it->stock = newStock;
+            } while ((!cin) || newStock < 0);
         }
-
-        if (!newStock < 0)
+        else if (userChoice == 2)
         {
-            it->stock = newStock;
+            cout << "No changes made." << endl;
         }
     }
     else
@@ -216,72 +244,71 @@ void updateProduct(vector<Product> &userProducts)
     }
 }
 int searchProduct()
-{
-    return 0;
-}
-
-void printInventory(vector<Product> &userProducts)
-{
-
-    std::cout << std::left << std::setw(10) << "ID"
-              << std::setw(10) << "Name"
-              << std::setw(15) << "Category"
-              << std::setw(15) << "Stock"
-              << std::setw(15) << "Price"
-              << std::endl;
-
-    for (auto &product : userProducts)
     {
-
-        std::cout << std::setw(10) << product.idNum
-                  << std::setw(10) << product.name
-                  << std::setw(15) << product.category
-                  << std::setw(15) << product.stock
-                  << std::setw(0) << "$"
-                  << std::setw(20) << std::fixed << std::setprecision(2)
-                  << product.price
-                  << std::endl;
+        return 0;
     }
-}
-int main()
-{
-    int menuChoice;
-    vector<Product> userProducts;
-    do
+    void printInventory(vector<Product> & userProducts)
     {
-        cout << "\n============================================\n";
-        cout << "========Inventory Management System=========\n";
-        cout << "===============Inventory Menu===============\n";
-        cout << "1. Add a new product\n";
-        cout << "2. Delete a product\n";
-        cout << "3. Update a product\n";
-        cout << "4. Search for a product\n";
-        cout << "5. Print inventory\n";
-        cout << "6. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> menuChoice;
-        cin.ignore();
 
-        switch (menuChoice)
+        std::cout << std::left << std::setw(10) << "ID"
+                  << std::setw(10) << "Name"
+                  << std::setw(15) << "Category"
+                  << std::setw(15) << "Stock"
+                  << std::setw(15) << "Price"
+                  << std::endl;
+
+        for (auto &product : userProducts)
         {
 
-        case 1:
-            addProduct(userProducts);
-            break;
-        case 2:
-            deleteProduct();
-            break;
-        case 3:
-            updateProduct(userProducts);
-            break;
-        case 4:
-            searchProduct();
-            break;
-        case 5:
-            printInventory(userProducts);
-            break;
+            std::cout << std::setw(10) << product.idNum
+                      << std::setw(10) << product.name
+                      << std::setw(15) << product.category
+                      << std::setw(15) << product.stock
+                      << std::setw(0) << "$"
+                      << std::setw(20) << std::fixed << std::setprecision(2)
+                      << product.price
+                      << std::endl;
         }
+    }
+    int main()
+    {
+        int menuChoice;
+        vector<Product> userProducts;
+        do
+        {
+            cout << "\n============================================\n";
+            cout << "========Inventory Management System=========\n";
+            cout << "===============Inventory Menu===============\n";
+            cout << "1. Add a new product\n";
+            cout << "2. Delete a product\n";
+            cout << "3. Update a product\n";
+            cout << "4. Search for a product\n";
+            cout << "5. Print inventory\n";
+            cout << "6. Exit\n";
+            cout << "Enter your choice: ";
+            cin >> menuChoice;
+            cin.ignore();
 
-    } while (menuChoice != 6);
-    return 0;
-}
+            switch (menuChoice)
+            {
+
+            case 1:
+                addProduct(userProducts);
+                break;
+            case 2:
+                deleteProduct();
+                break;
+            case 3:
+                updateProduct(userProducts);
+                break;
+            case 4:
+                searchProduct();
+                break;
+            case 5:
+                printInventory(userProducts);
+                break;
+            }
+
+        } while (menuChoice != 6);
+        return 0;
+    }
