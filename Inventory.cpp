@@ -18,18 +18,36 @@ struct Product
 void addProduct(vector<Product> &userProducts)
 {
     Product newProduct;
+    string Identification;
     char continuar;
     do
     {
         cout << "\n===========================================\n";
         cout << "========Inventory Management System========\n";
-        cout << "=============Adding New Product=============\n";
+        cout << "=============Adding New Product============\n";
 
         do
         {
+
             cout << "Enter Identification Number (----): ";
             std::getline(cin, newProduct.idNum);
 
+            for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
+            {
+                if (newProduct.idNum == userProducts.at(i).idNum) // if found
+                {
+                    cout << "\n=======================================\n";
+                    cout << "=======ERROR: ID Already in Use=======\n";
+                    cout << "=======================================\n";
+                    newProduct.idNum = "!@#";
+                    break;
+                }
+            }
+
+            if (newProduct.idNum == "!@#")
+            {
+                continue;
+            }
             if (newProduct.idNum.length() > 4)
             {
                 cout << "\n===========================================\n";
@@ -40,7 +58,7 @@ void addProduct(vector<Product> &userProducts)
             else if (newProduct.idNum.length() < 4)
             {
                 cout << "\n============================================\n";
-                cout << "======ERROR: ID Can't be less than 1000====== \n";
+                cout << "=====ERROR: ID Can't be less than 1000====== \n";
                 cout << "============================================\n";
                 continue;
             }
@@ -320,7 +338,7 @@ void searchProduct(vector<Product> &userProducts)
             }
         }
     };
-
+    //////////////////////////////////////////////////////////////////////////////////////////
     int searchChoice;
     do
     {
