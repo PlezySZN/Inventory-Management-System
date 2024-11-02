@@ -244,115 +244,6 @@ void updateProduct(vector<Product> &userProducts)
         cout << "=========================================\n";
     }
 }
-// Keven Paulino Ferrer
-void searchProduct(vector<Product> &userProducts)
-{
-    vector<Product> searchProduct;
-    // Keven Paulino Ferrer
-    // lambda Function for searching by category and name
-    auto searchBy_Category_Name_id = [](vector<Product> &userProducts, vector<Product> &searchProduct, int searchChoice)
-    {
-        if (searchChoice == 1) // if it was by Id
-        {
-            string id;
-            cout << "Enter Id: ";
-            std::getline(cin, id);
-            // Harrys Santiago Santana
-            // lambdas for searching by id
-            auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &matchedProduct)
-                              { return matchedProduct.idNum == id; });
-
-            if (it != userProducts.end()) // if found
-            {
-
-                cout << "\n";
-                cout << "ID: " << it->idNum << "\n";
-                cout << "Name: " << it->name << "\n";
-                cout << "Category: " << it->category << "\n";
-                cout << "Stock: " << it->stock << "\n";
-                cout << "Price: $" << std::fixed << std::setprecision(2) << it->price << "\n";
-            }
-            else
-            {
-                cout << "\n=======================================\n";
-                cout << "======ERROR: ID Couldn't be Found======\n";
-                cout << "=======================================\n";
-            }
-        }
-        else if (searchChoice == 2) // if search by category
-        {
-            string userCategory;
-            cout << "Enter Category: ";
-            std::getline(cin, userCategory);
-            for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
-            {
-                if (userCategory != userProducts.at(i).category)
-                {
-                    continue;
-                }
-                searchProduct.push_back(userProducts.at(i)); // pushes element of userProducts to searchProduct
-            }
-            if (searchProduct.empty()) // if searchProduct is empty
-            {
-                cout << "\n=============================================\n";
-                cout << "======ERROR: Category Couldn't be Found======\n";
-                cout << "=============================================\n";
-            }
-        }
-        else if (searchChoice == 3) // if search by Name
-        {
-            string userName;
-            cout << "Enter Name: ";
-            std::getline(cin, userName);
-            for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
-            {
-                if (userName != userProducts.at(i).name)
-                {
-                    continue;
-                }
-                searchProduct.push_back(userProducts.at(i)); // pushes element of userProducts to searchProduct
-            }
-            if (searchProduct.empty()) // if searchProduct is empty
-            {
-                cout << "\n=========================================\n";
-                cout << "======ERROR: Name Couldn't be Found======\n";
-                cout << "=========================================\n";
-            }
-        }
-    };
-
-    int searchChoice;
-    do
-    {
-        cout << "\n============================================\n";
-        cout << "========Inventory Management System=========\n";
-        cout << "================Search Menu=================\n";
-        cout << "1. Search by ID \n";
-        cout << "2. Search by category \n";
-        cout << "3. Search by Name \n";
-        cout << "Enter your choice: ";
-        cin >> searchChoice;
-
-    } while (searchChoice < 1 || searchChoice > 3);
-
-    searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
-
-    for (Product Search : searchProduct)
-    {
-        if (searchChoice == 1) // if it was by Id
-        {
-            break;
-        }
-
-        cout << "\n";
-        cout << "ID: " << Search.idNum << "\n";
-        cout << "Name: " << Search.name << "\n";
-        cout << "Category: " << Search.category << "\n";
-        cout << "Stock: " << Search.stock << "\n";
-        cout << "Price: $" << std::fixed << std::setprecision(2) << Search.price << "\n";
-    }
-    searchProduct.clear(); // clears vector just in case
-}
 
 void printInventory(vector<Product> &userProducts)
 {
@@ -376,6 +267,134 @@ void printInventory(vector<Product> &userProducts)
                   << product.price
                   << std::endl;
     }
+}
+
+// Keven Paulino Ferrer
+void searchProduct(vector<Product> &userProducts)
+{
+    vector<Product> searchProduct;
+    // Keven Paulino Ferrer
+    // lambda Function for searching by category and name
+    auto searchBy_Category_Name_id = [](vector<Product> &userProducts, vector<Product> &searchProduct, int searchChoice)
+    {
+        if (searchChoice == 1) // if it was by Id
+        {
+            string id;
+            cout << "Enter Id: ";
+            std::getline(cin, id);
+            // Harrys Santiago Santana
+            // lambdas for searching by id
+            auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &matchedProduct)
+                              { return matchedProduct.idNum == id; });
+
+            if (it != userProducts.end()) // if found
+            {
+                // Harrys Santiago Santana
+                std::cout << std::left << std::setw(10) << "ID"
+                          << std::setw(10) << "Name"
+                          << std::setw(15) << "Category"
+                          << std::setw(15) << "Stock"
+                          << std::setw(15) << "Price"
+                          << std::endl;
+
+                std::cout << std::setw(10) << it->idNum
+                          << std::setw(10) << it->name
+                          << std::setw(15) << it->category
+                          << std::setw(15) << it->stock
+                          << std::setw(0) << "$"
+                          << std::setw(20) << std::fixed << std::setprecision(2)
+                          << it->price
+                          << std::endl;
+        }
+        else
+        {
+            cout << "\n=======================================\n";
+            cout << "======ERROR: ID Couldn't be Found======\n";
+            cout << "=======================================\n";
+        }
+    } else if (searchChoice == 2) // if search by category
+    {
+        string userCategory;
+        cout << "Enter Category: ";
+        std::getline(cin, userCategory);
+        for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
+        {
+            if (userCategory != userProducts.at(i).category)
+            {
+                continue;
+            }
+            searchProduct.push_back(userProducts.at(i)); // pushes element of userProducts to searchProduct
+        }
+        if (searchProduct.empty()) // if searchProduct is empty
+        {
+            cout << "\n=============================================\n";
+            cout << "======ERROR: Category Couldn't be Found======\n";
+            cout << "=============================================\n";
+        }
+    }
+    else if (searchChoice == 3) // if search by Name
+    {
+        string userName;
+        cout << "Enter Name: ";
+        std::getline(cin, userName);
+        for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
+        {
+            if (userName != userProducts.at(i).name)
+            {
+                continue;
+            }
+            searchProduct.push_back(userProducts.at(i)); // pushes element of userProducts to searchProduct
+        }
+        if (searchProduct.empty()) // if searchProduct is empty
+        {
+            cout << "\n=========================================\n";
+            cout << "======ERROR: Name Couldn't be Found======\n";
+            cout << "=========================================\n";
+        }
+    }
+};
+
+int searchChoice;
+do
+{
+    cout << "\n============================================\n";
+    cout << "========Inventory Management System=========\n";
+    cout << "================Search Menu=================\n";
+    cout << "1. Search by ID \n";
+    cout << "2. Search by category \n";
+    cout << "3. Search by Name \n";
+    cout << "Enter your choice: ";
+    cin >> searchChoice;
+    cin.ignore();
+
+} while (searchChoice < 1 || searchChoice > 3);
+
+searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
+
+for (Product Search : searchProduct)
+{
+    if (searchChoice == 1) // if it was by Id
+    {
+        break;
+    }
+    //Harrys Santiago Santana
+    std::cout << std::left << std::setw(10) << "ID"
+              << std::setw(10) << "Name"
+              << std::setw(15) << "Category"
+              << std::setw(15) << "Stock"
+              << std::setw(15) << "Price"
+              << std::endl;
+
+    std::cout << std::setw(10) << Search.idNum
+              << std::setw(10) << Search.name
+              << std::setw(15) << Search.category
+              << std::setw(15) << Search.stock
+              << std::setw(0) << "$"
+              << std::setw(20) << std::fixed << std::setprecision(2)
+              << Search.price
+              << std::endl;
+}
+searchProduct.clear(); // clears vector just in case
 }
 
 int main()
