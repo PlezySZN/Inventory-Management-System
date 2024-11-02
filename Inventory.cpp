@@ -267,7 +267,7 @@ void searchProduct(vector<Product> &userProducts)
 {
     vector<Product> searchProduct;
     // Keven Paulino Ferrer
-    // lambda Function for searching by category and name
+    // lambda Function for searching by category and name and id
     auto searchBy_Category_Name_id = [](vector<Product> &userProducts, vector<Product> &searchProduct, int searchChoice)
     {
         if (searchChoice == 1) // if it was by Id
