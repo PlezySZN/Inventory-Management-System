@@ -49,6 +49,7 @@ void addProduct(vector<Product> &userProducts)
 
         cout << "Enter Name of the Product: ";
         std::getline(cin, newProduct.name);
+
         cout << "Enter the category (food, drink, etc...): ";
         std::getline(cin, newProduct.category);
 
@@ -255,7 +256,7 @@ void searchProduct(vector<Product> &userProducts)
         {
             string id;
             cout << "Enter Id: ";
-            cin >> id;
+            std::getline(cin, id);
             // Harrys Santiago Santana
             // lambdas for searching by id
             auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &matchedProduct)
@@ -282,7 +283,7 @@ void searchProduct(vector<Product> &userProducts)
         {
             string userCategory;
             cout << "Enter Category: ";
-            cin >> userCategory;
+            std::getline(cin, userCategory);
             for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
             {
                 if (userCategory != userProducts.at(i).category)
@@ -302,7 +303,7 @@ void searchProduct(vector<Product> &userProducts)
         {
             string userName;
             cout << "Enter Name: ";
-            cin >> userName;
+            std::getline(cin, userName);
             for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
             {
                 if (userName != userProducts.at(i).name)
@@ -323,7 +324,6 @@ void searchProduct(vector<Product> &userProducts)
     int searchChoice;
     do
     {
-
         cout << "\n============================================\n";
         cout << "========Inventory Management System=========\n";
         cout << "================Search Menu=================\n";
