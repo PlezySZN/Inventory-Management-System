@@ -141,11 +141,10 @@ void deleteProduct()
 // Harrys Santiago Santana
 void updateProduct(vector<Product> &userProducts)
 {
-    // Create a variable to search if id is = to id on userProducts
+    // Create a variable to search if 'id' is = to 'idNum' on userProducts
     string id;
     int userChoice;
 
-    // Prompt user to enter the id of the product they want to update
     cout << "\n===========================================\n";
     cout << "========Inventory Management System========\n";
     cout << "==============Updating Product==============\n";
@@ -153,7 +152,7 @@ void updateProduct(vector<Product> &userProducts)
     cin >> id;
     cin.ignore(); // Clean Buffer
 
-    // Search the product in vector by ID
+    // Search the product in vector 'userProduct' by ID
     auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &userProduct)
                       { return userProduct.idNum == id; });
 
@@ -266,24 +265,25 @@ void updateProduct(vector<Product> &userProducts)
 void printInventory(vector<Product> &userProducts)
 {
 
-    std::cout << std::left << std::setw(10) << "ID"
-              << std::setw(10) << "Name"
-              << std::setw(15) << "Category"
-              << std::setw(15) << "Stock"
-              << std::setw(15) << "Price"
-              << std::endl;
+    cout << std::left << "| " << std::setw(15) << "ID"
+         << "| " << std::setw(20) << "Name"
+         << "| " << std::setw(15) << "Category"
+         << "| " << std::setw(15) << "Stock"
+         << "| " << std::setw(15) << "Price"
+         << std::endl;
+
+    cout << "====================================================================================\n";
 
     for (auto &product : userProducts)
     {
 
-        std::cout << std::setw(10) << product.idNum
-                  << std::setw(10) << product.name
-                  << std::setw(15) << product.category
-                  << std::setw(15) << product.stock
-                  << std::setw(0) << "$"
-                  << std::setw(20) << std::fixed << std::setprecision(2)
-                  << product.price
-                  << std::endl;
+        cout << "| " << std::setw(15) << product.idNum
+             << "| " << std::setw(20) << product.name
+             << "| " << std::setw(15) << product.category
+             << "| " << std::setw(15) << product.stock
+             << "| " << std::setw(0) << "$"
+             << std::setw(15) << std::fixed << std::setprecision(2) << product.price
+             << std::endl;
     }
 }
 
@@ -303,21 +303,22 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
         if (it != userProducts.end()) // if found
         {
             // Harrys Santiago Santana
-            std::cout << std::left << std::setw(10) << "ID"
-                      << std::setw(10) << "Name"
-                      << std::setw(15) << "Category"
-                      << std::setw(15) << "Stock"
-                      << std::setw(15) << "Price"
-                      << std::endl;
+            cout << std::left << "| " << std::setw(15) << "ID"
+                 << "| " << std::setw(20) << "Name"
+                 << "| " << std::setw(15) << "Category"
+                 << "| " << std::setw(15) << "Stock"
+                 << "| " << std::setw(15) << "Price"
+                 << std::endl;
 
-            std::cout << std::setw(10) << it->idNum
-                      << std::setw(10) << it->name
-                      << std::setw(15) << it->category
-                      << std::setw(15) << it->stock
-                      << std::setw(0) << "$"
-                      << std::setw(20) << std::fixed << std::setprecision(2)
-                      << it->price
-                      << std::endl;
+            cout << "====================================================================================\n";
+
+            cout << "| " << std::setw(15) << it->idNum
+                 << "| " << std::setw(20) << it->name
+                 << "| " << std::setw(15) << it->category
+                 << "| " << std::setw(15) << it->stock
+                 << "| " << std::setw(0) << "$"
+                 << std::setw(15) << std::fixed << std::setprecision(2) << it->price
+                 << std::endl;
         }
         else
         {
@@ -388,29 +389,34 @@ void searchProduct(vector<Product> &userProducts)
 
     searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
 
+    if (searchChoice == 2 || searchChoice == 3)
+    {
+        //Harrys Santiago Santana
+        cout << std::left << "| " << std::setw(15) << "ID"
+             << "| " << std::setw(20) << "Name"
+             << "| " << std::setw(15) << "Category"
+             << "| " << std::setw(15) << "Stock"
+             << "| " << std::setw(15) << "Price"
+             << std::endl;
+
+        cout << "====================================================================================\n";
+    }
+
     for (Product Search : searchProduct)
     {
         if (searchChoice == 1) // if it was by Id
         {
             break;
         }
+
         // Harrys Santiago Santana
-
-        std::cout << std::left << std::setw(10) << "ID"
-                  << std::setw(10) << "Name"
-                  << std::setw(15) << "Category"
-                  << std::setw(15) << "Stock"
-                  << std::setw(15) << "Price"
-                  << std::endl;
-
-        std::cout << std::setw(10) << Search.idNum
-                  << std::setw(10) << Search.name
-                  << std::setw(15) << Search.category
-                  << std::setw(15) << Search.stock
-                  << std::setw(0) << "$"
-                  << std::setw(20) << std::fixed << std::setprecision(2)
-                  << Search.price
-                  << std::endl;
+        cout << "| " << std::setw(15) << Search.idNum
+             << "| " << std::setw(20) << Search.name
+             << "| " << std::setw(15) << Search.category
+             << "| " << std::setw(15) << Search.stock
+             << "| " << std::setw(0) << "$"
+             << std::setw(15) << std::fixed << std::setprecision(2) << Search.price
+             << std::endl;
     }
     searchProduct.clear(); // clears vector just in case
 }
