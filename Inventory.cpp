@@ -14,11 +14,11 @@ struct Product
     double price;
     double stock;
 };
+
 // Keven Paulino Ferrer
 void addProduct(vector<Product> &userProducts)
 {
     Product newProduct;
-    string Identification;
     char continuar;
     do
     {
@@ -48,22 +48,15 @@ void addProduct(vector<Product> &userProducts)
             {
                 continue;
             }
-            if (newProduct.idNum.length() > 4)
+            if (newProduct.idNum.length() != 4)
             {
-                cout << "\n===========================================\n";
-                cout << "=====ERROR: ID Can't be more than 9999=====\n";
-                cout << "===========================================\n";
-                continue;
-            }
-            else if (newProduct.idNum.length() < 4)
-            {
-                cout << "\n============================================\n";
-                cout << "=====ERROR: ID Can't be less than 1000====== \n";
-                cout << "============================================\n";
+                cout << "\n===========================================================\n";
+                cout << "=====ERROR: ID Can't be more or less than 4 characters=====\n";
+                cout << "===========================================================\n";
                 continue;
             }
 
-        } while (newProduct.idNum.length() < 4);
+        } while (newProduct.idNum.length() != 4);
 
         cout << "Enter Name of the Product: ";
         std::getline(cin, newProduct.name);
@@ -79,7 +72,7 @@ void addProduct(vector<Product> &userProducts)
             if ((!cin))
             {
                 cout << "\n=======================================================\n";
-                cout << "=====ERROR: Invalid input. Please Enter a number ===== \n";
+                cout << "=====ERROR: Invalid input. Please Enter a number ======\n";
                 cout << "=======================================================\n";
 
                 cin.clear();
@@ -90,7 +83,7 @@ void addProduct(vector<Product> &userProducts)
             if (newProduct.price < 0)
             {
                 cout << "\n===========================================\n";
-                cout << "=====ERROR: Price Can't be Less than 0===== \n";
+                cout << "=====ERROR: Price Can't be Less than 0======\n";
                 cout << "===========================================\n";
             }
         } while (newProduct.price < 0);
@@ -103,7 +96,7 @@ void addProduct(vector<Product> &userProducts)
             if ((!cin))
             {
                 cout << "\n=======================================================\n";
-                cout << "=====ERROR: Invalid input. Please Enter a number ===== \n";
+                cout << "=====ERROR: Invalid input. Please Enter a number ======\n";
                 cout << "=======================================================\n";
 
                 cin.clear();
@@ -115,7 +108,7 @@ void addProduct(vector<Product> &userProducts)
             if (newProduct.stock < 0)
             {
                 cout << "\n============================================\n";
-                cout << "======ERROR: Stock Can't be Less tha 0====== \n";
+                cout << "======ERROR: Stock Can't be Less tha 0======\n";
                 cout << "============================================\n";
             }
 
@@ -147,7 +140,7 @@ void updateProduct(vector<Product> &userProducts)
 
     cout << "\n===========================================\n";
     cout << "========Inventory Management System========\n";
-    cout << "==============Updating Product==============\n";
+    cout << "==============Updating Product=============\n";
     cout << "Enter Product ID to update: ";
     cin >> id;
     cin.ignore(); // Clean Buffer
@@ -185,7 +178,6 @@ void updateProduct(vector<Product> &userProducts)
             cout << "No changes made." << endl;
         }
 
-        // Show current product details
         cout << "===========================================\n";
         cout << "Current product category: " << it->category << endl;
         cout << "============================================\n";
@@ -206,7 +198,6 @@ void updateProduct(vector<Product> &userProducts)
             cout << "No changes made." << endl;
         }
 
-        // Show current product details
         cout << "===========================================\n";
         cout << "Current price: $" << std::fixed << std::setprecision(2) << it->price << endl;
         cout << "============================================\n\n";
@@ -221,16 +212,15 @@ void updateProduct(vector<Product> &userProducts)
             do
             {
                 cout << "Enter product price to update: ";
-                cin >> newPrice;
+                cin >> newPrice;  
                 it->price = newPrice;
-            } while ((!cin) || newPrice < 0);
+            } while (newPrice < 0);
         }
         else if (userChoice == 2)
         {
             cout << "No changes made." << endl;
         }
 
-        // Show current product details
         cout << "===========================================\n";
         cout << "Current stock: " << it->stock << endl;
         cout << "============================================\n\n";
@@ -247,7 +237,7 @@ void updateProduct(vector<Product> &userProducts)
                 cout << "Enter product stock to update: ";
                 cin >> newStock;
                 it->stock = newStock;
-            } while ((!cin) || newStock < 0);
+            } while (newStock < 0);
         }
         else if (userChoice == 2)
         {
@@ -262,23 +252,23 @@ void updateProduct(vector<Product> &userProducts)
     }
 }
 
+// Harrys Santiago Santana
 void printInventory(vector<Product> &userProducts)
 {
-
-    cout << std::left << "| " << std::setw(15) << "ID"
-         << "| " << std::setw(20) << "Name"
+    cout << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
+         << "| " << std::setw(15) << "Name"
          << "| " << std::setw(15) << "Category"
          << "| " << std::setw(15) << "Stock"
          << "| " << std::setw(15) << "Price"
          << std::endl;
 
-    cout << "====================================================================================\n";
+    cout << "===================================================================\n"; // Second row of inventory (Divider Line)
 
-    for (auto &product : userProducts)
+    for (auto &product : userProducts) // Third row of inventory (All Products)
     {
 
-        cout << "| " << std::setw(15) << product.idNum
-             << "| " << std::setw(20) << product.name
+        cout << "| " << std::setw(6) << product.idNum
+             << "| " << std::setw(15) << product.name
              << "| " << std::setw(15) << product.category
              << "| " << std::setw(15) << product.stock
              << "| " << std::setw(0) << "$"
@@ -287,22 +277,21 @@ void printInventory(vector<Product> &userProducts)
     }
 }
 
-// Keven {Paulino Ferrer
+// Keven Paulino Ferrer
 void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &searchProduct, int searchChoice)
 {
     if (searchChoice == 1) // if it was by Id
     {
+        // Harrys Santiago Santana
         string id;
         cout << "Enter Id: ";
         std::getline(cin, id);
-        // Harrys Santiago Santana
-        // lambdas for searching by id
+        // Iteration through userProducts to find products that match 'ID'
         auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &matchedProduct)
                           { return matchedProduct.idNum == id; });
 
-        if (it != userProducts.end()) // if found
+        if (it != userProducts.end()) // If found
         {
-            // Harrys Santiago Santana
             cout << std::left << "| " << std::setw(15) << "ID"
                  << "| " << std::setw(20) << "Name"
                  << "| " << std::setw(15) << "Category"
@@ -326,7 +315,7 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
             cout << "======ERROR: ID Couldn't be Found======\n";
             cout << "=======================================\n";
         }
-    }
+    } // Keven Paulino Ferrer
     else if (searchChoice == 2) // if search by category
     {
         string userCategory;
@@ -391,7 +380,7 @@ void searchProduct(vector<Product> &userProducts)
 
     if (searchChoice == 2 || searchChoice == 3)
     {
-        //Harrys Santiago Santana
+        // Harrys Santiago Santana
         cout << std::left << "| " << std::setw(15) << "ID"
              << "| " << std::setw(20) << "Name"
              << "| " << std::setw(15) << "Category"
@@ -401,7 +390,7 @@ void searchProduct(vector<Product> &userProducts)
 
         cout << "====================================================================================\n";
     }
-
+    // Keven Paulino Ferrer
     for (Product Search : searchProduct)
     {
         if (searchChoice == 1) // if it was by Id
