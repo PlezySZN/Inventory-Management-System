@@ -65,6 +65,9 @@ void addProduct(vector<Product> &userProducts)
 {
     Product newProduct;
     char continuar;
+
+    const int MAX_NAME_LENGTH = 20;
+
     do
     {
         cout << "\n===========================================\n";
@@ -85,11 +88,11 @@ void addProduct(vector<Product> &userProducts)
                 cout << "\n================================================\n";
                 cout << "=======ERROR: ID " << it->idNum << " Its already in Use========\n";
                 cout << "================================================\n";
-                newProduct.idNum = "!@#";
+                newProduct.idNum = "";
             }
 
             // Keven Paulino Ferrer
-            if (newProduct.idNum == "!@#")
+            if (newProduct.idNum == "")
             {
                 continue;
             }
@@ -106,6 +109,14 @@ void addProduct(vector<Product> &userProducts)
 
         cout << "Enter Name of the Product: ";
         validateStringInput(newProduct.name);
+        if (newProduct.name.length() > MAX_NAME_LENGTH)
+        {
+            cout << "\n=========================================================\n";
+            cout << "=====ERROR: Name Can't have more than 20 characters======\n";
+            cout << "=========================================================\n";
+            continue;
+
+        }
 
         cout << "Enter the category (food, drink, etc...): ";
         validateStringInput(newProduct.category);
@@ -116,7 +127,8 @@ void addProduct(vector<Product> &userProducts)
 
             // Harrys Santiago Santana
             validateInput(newProduct.price);
-
+            cin.ignore();
+            
             // Keven Paulino Ferrer
             if (newProduct.price < 0)
             {
