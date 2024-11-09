@@ -16,7 +16,8 @@ struct Product
 };
 
 // Harrys Santiago Santana
-void validateInput(double &input) {
+void validateInput(double &input)
+{
     while (true)
     {
         cin >> input;
@@ -34,7 +35,8 @@ void validateInput(double &input) {
 }
 
 // Harrys Santiago Santana
-int getUserChoice(int &input) {
+int getUserChoice(int &input)
+{
     cout << "1. Update product \n";
     cout << "2. Don't make changes.\n\n";
     cout << "Enter your choice: ";
@@ -110,7 +112,7 @@ void addProduct(vector<Product> &userProducts)
         cout << "Enter the category (food, drink, etc...): ";
         validateStringInput(newProduct.category);
 
-            do
+        do
         {
             cout << "Enter the Price of the Product:";
 
@@ -132,7 +134,7 @@ void addProduct(vector<Product> &userProducts)
 
             // Harrys Santiago Santana
             validateInput(newProduct.stock);
-            
+
             // Keven Paulino Ferrer
             if (newProduct.stock < 0)
             {
@@ -226,20 +228,20 @@ void updateProduct(vector<Product> &userProducts)
 
         if (userChoice == 1)
         {
-                do
-                {
-                    cout << "Enter product stock to update: ";
-                    validateInput(newPrice);
+            do
+            {
+                cout << "Enter product stock to update: ";
+                validateInput(newPrice);
 
-                    if (newPrice < 0)
-                    {
-                        cout << "\n============================================\n";
-                        cout << "======ERROR: Price Can't be Less tha 0======\n";
-                        cout << "============================================\n";
-                    }
-                    
-                } while (newPrice< 0);
-                it->price = newPrice;
+                if (newPrice < 0)
+                {
+                    cout << "\n============================================\n";
+                    cout << "======ERROR: Price Can't be Less tha 0======\n";
+                    cout << "============================================\n";
+                }
+
+            } while (newPrice < 0);
+            it->price = newPrice;
         }
         else if (userChoice == 2)
         {
@@ -419,26 +421,26 @@ void searchProduct(vector<Product> &userProducts)
                  << std::endl;
 
             cout << "====================================================================================\n";
-        }
-    }
-    // Keven Paulino Ferrer
-    for (Product Search : searchProduct)
-    {
-        if (searchChoice == 1) // if it was by Id
-        {
-            break;
-        }
+            // Keven Paulino Ferrer
+            for (Product Search : searchProduct)
+            {
+                if (searchChoice == 1) // if it was by Id
+                {
+                    break;
+                }
 
-        // Harrys Santiago Santana
-        cout << "| " << std::setw(6) << Search.idNum
-             << "| " << std::setw(20) << Search.name
-             << "| " << std::setw(15) << Search.category
-             << "| " << std::setw(15) << Search.stock
-             << "| " << std::setw(0) << "$"
-             << std::setw(15) << std::fixed << std::setprecision(2) << Search.price
-             << std::endl;
+                // Harrys Santiago Santana
+                cout << "| " << std::setw(6) << Search.idNum
+                     << "| " << std::setw(20) << Search.name
+                     << "| " << std::setw(15) << Search.category
+                     << "| " << std::setw(15) << Search.stock
+                     << "| " << std::setw(0) << "$"
+                     << std::setw(15) << std::fixed << std::setprecision(2) << Search.price
+                     << std::endl;
+            }
+            searchProduct.clear(); // clears vector just in case
+        }
     }
-    searchProduct.clear(); // clears vector just in case
 }
 
 int main()
