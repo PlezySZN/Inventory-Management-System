@@ -93,5 +93,5 @@ Contributions are welcome. If you wish to contribute, please follow these steps:
 
 For any questions or suggestions, please contact the developers.
 ```
-@hsantiaggoo@gmail.com
+@PlezySZN, @KVNYDPLFR
 ```
