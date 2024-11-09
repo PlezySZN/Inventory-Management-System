@@ -1,4 +1,3 @@
-```markdown
 # Inventory Management System
 
 This is a simple inventory management system written in C++. It allows adding, updating, searching, and deleting products from the inventory, as well as printing the entire inventory.
