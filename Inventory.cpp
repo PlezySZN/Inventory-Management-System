@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <fstream>
 
 using std::vector, std::string, std::cout, std::cin, std::endl;
 
@@ -17,6 +18,24 @@ struct Product
 
 // Harrys Santiago Santana
 void validateInput(double &input)
+{
+    while (true)
+    {
+        cin >> input;
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid input. Please enter a number: ";
+        }
+        else
+        {
+            break;
+        }
+    }
+}
+
+void validateInput(int &input) // so that the input can be int
 {
     while (true)
     {
@@ -63,6 +82,61 @@ void validateStringInput(string &input)
 }
 
 // Keven Paulino Ferrer
+void readFile(vector<Product> &UserProduct)
+{
+    std::ifstream Infile;
+    Infile.open("Products.txt");
+
+    if (Infile.is_open())
+    {
+        Product readFile;
+        Infile >> std::ws;    // moves to nearest non whitespace in the file
+        while (!Infile.eof()) // if its not the end of the file
+        {
+            Infile >>
+                readFile.idNum >> readFile.name >>
+                readFile.category >> readFile.price >>
+                readFile.stock;
+            UserProduct.push_back(readFile);
+        }
+        Infile.close();
+    }
+    else
+    {
+        cout << "\n===========================================\n";
+        cout << "======Failed to open file for reading======\n";
+        cout << "===========================================\n";
+    }
+}
+
+// Keven Paulino Ferrer
+void WriteFile(vector<Product> &UserProduct)
+{
+    std::ofstream Outfile;
+    Outfile.open("Products.txt");
+
+    if (Outfile.is_open())
+    {
+        for (Product Print : UserProduct)
+        {
+            Outfile << '\n'
+                    << Print.idNum << '\n'
+                    << Print.name << '\n'
+                    << Print.category << '\n'
+                    << Print.price << '\n'
+                    << Print.stock;
+        }
+        Outfile.close();
+    }
+    else
+    {
+        cout << "\n===========================================\n";
+        cout << "======Failed to open file for writing======\n";
+        cout << "===========================================\n";
+    }
+}
+
+// Keven Paulino Ferrer
 void addProduct(vector<Product> &userProducts)
 {
     Product newProduct;
@@ -74,7 +148,7 @@ void addProduct(vector<Product> &userProducts)
     {
         cout << "\n===========================================\n";
         cout << "========Inventory Management System========\n";
-        cout << "=============Adding New Product============\n";
+        cout << "=================Add Product===============\n";
 
         do
         {
@@ -117,7 +191,6 @@ void addProduct(vector<Product> &userProducts)
             cout << "=====ERROR: Name Can't have more than 20 characters======\n";
             cout << "=========================================================\n";
             continue;
-
         }
 
         cout << "Enter the category (food, drink, etc...): ";
@@ -130,7 +203,7 @@ void addProduct(vector<Product> &userProducts)
             // Harrys Santiago Santana
             validateInput(newProduct.price);
             cin.ignore();
-            
+
             // Keven Paulino Ferrer
             if (newProduct.price < 0)
             {
@@ -413,7 +486,7 @@ void searchProduct(vector<Product> &userProducts)
         cout << "2. Search by category \n";
         cout << "3. Search by Name \n";
         cout << "Enter your choice: ";
-        cin >> searchChoice;
+        validateInput(searchChoice);
         cin.ignore();
 
     } while (searchChoice < 1 || searchChoice > 3);
@@ -459,6 +532,9 @@ int main()
 {
     int menuChoice;
     vector<Product> userProducts;
+    std::ofstream Myfile("Products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
+    Myfile.close();
+    readFile(userProducts);
     do
     {
         cout << "\n============================================\n";
@@ -471,7 +547,7 @@ int main()
         cout << "5. Print inventory\n";
         cout << "6. Exit\n";
         cout << "Enter your choice: ";
-        cin >> menuChoice;
+        validateInput(menuChoice);
         cin.ignore();
 
         switch (menuChoice)
@@ -481,22 +557,41 @@ int main()
             addProduct(userProducts);
             break;
         case 2:
-            deleteProduct();
+            if (!userProducts.empty())
+            {
+                deleteProduct();
+            }
             break;
         case 3:
-            updateProduct(userProducts);
+            if (!userProducts.empty())
+            {
+                updateProduct(userProducts);
+            }
             break;
         case 4:
-            searchProduct(userProducts);
+            if (!userProducts.empty())
+            {
+                searchProduct(userProducts);
+            }
             break;
         case 5:
-            printInventory(userProducts);
+            if (!userProducts.empty())
+            {
+                printInventory(userProducts);
+            }
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
             break;
         }
+        if (userProducts.empty())
+        {
+            cout << "\n============================================\n";
+            cout << "============Error: No Products==============\n";
+            cout << "============================================\n";
+        }
 
+        WriteFile(userProducts);
     } while (menuChoice != 6);
     return 0;
 }
