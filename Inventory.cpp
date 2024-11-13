@@ -95,16 +95,16 @@ void readFile(vector<Product> &UserProduct)
     if (inFile.is_open())
     {
         Product readFile;
-        inFile >> std::ws;               // moves to nearest non whitespace in the file
+        inFile >> std::ws; // moves to nearest non whitespace in the file
         while (inFile >> readFile.idNum)
         {
             inFile.ignore();
             std::getline(inFile, readFile.name);
             std::getline(inFile, readFile.category);
             inFile >>
-            readFile.Units >>
-            readFile.price >>
-            readFile.stock;
+                readFile.Units >>
+                readFile.price >>
+                readFile.stock;
             UserProduct.push_back(readFile);
         }
         inFile.close();
@@ -230,7 +230,6 @@ void addProduct(vector<Product> &userProducts)
             }
 
         } while (newProduct.stock < 0);
-        //////////////////////////----------New---------/////////////////////////////
         do
         {
             cout << "Enter Unit  of measurement (units, lbs, kg, etc...): ";
@@ -244,7 +243,6 @@ void addProduct(vector<Product> &userProducts)
 
         } while (newProduct.Units.length() > 5);
 
-        //////////////////////////----------New---------/////////////////////////////
         userProducts.push_back(newProduct);
 
         cout << "Do You Wish to Continue Adding Products (Y/N)";
@@ -374,7 +372,7 @@ void updateProduct(vector<Product> &userProducts)
         {
             cout << "No changes made." << endl;
         }
-        //////////////////////////----------New---------/////////////////////////////
+
         cout << "\n===========================================\n"
              << "Current product Measuring Units: " << it->Units << endl
              << "============================================\n";
@@ -398,7 +396,7 @@ void updateProduct(vector<Product> &userProducts)
         else if (userChoice == 2)
         {
             cout << "No changes made." << endl;
-        } //////////////////////////----------New---------/////////////////////////////
+        }
     }
     else
     {
@@ -427,7 +425,7 @@ void printInventory(vector<Product> &userProducts)
         cout << "| " << std::setw(6) << product.idNum
              << "| " << std::setw(20) << product.name
              << "| " << std::setw(20) << product.category
-             << "| " << std::setw(15) << product.stock 
+             << "| " << std::setw(15) << product.stock
              << "| " << std::setw(15) << product.Units
              << "| " << std::setw(0) << "$"
              << std::setw(15) << std::fixed << std::setprecision(2) << product.price
