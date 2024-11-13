@@ -17,6 +17,9 @@ struct Product
     double stock;
 };
 
+const int MAX_NAME_LENGTH = 20;
+const int ID_LENGTH = 4;
+
 // Harrys Santiago Santana
 void validateInput(double &input)
 {
@@ -36,6 +39,7 @@ void validateInput(double &input)
     }
 }
 
+// Harrys Santiago Santana 
 void validateInput(int &input) // so that the input can be int
 {
     while (true)
@@ -82,7 +86,7 @@ void validateStringInput(string &input)
     }
 }
 
-// Keven Paulino Ferrer
+// Keven Paulino Ferrer & Harrys Santiago Santana
 void readFile(vector<Product> &UserProduct)
 {
     std::ifstream inFile;
@@ -147,8 +151,6 @@ void addProduct(vector<Product> &userProducts)
     Product newProduct;
     char continuar;
 
-    const int MAX_NAME_LENGTH = 20;
-
     do
     {
         cout << "\n===========================================\n"
@@ -172,14 +174,14 @@ void addProduct(vector<Product> &userProducts)
                 newProduct.idNum = "";
             }
 
-            if (newProduct.idNum.length() != 4)
+            if (newProduct.idNum.length() != ID_LENGTH)
             {
                 cout << "\n===========================================================\n"
                      << "=====ERROR: ID Can't be more or less than 4 characters=====\n"
                      << "===========================================================\n";
             }
 
-        } while (newProduct.idNum.length() != 4);
+        } while (newProduct.idNum.length() != ID_LENGTH);
 
         cout << "Enter Name of the Product: ";
         validateStringInput(newProduct.name);
