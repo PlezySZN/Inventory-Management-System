@@ -85,22 +85,25 @@ void validateStringInput(string &input)
 // Keven Paulino Ferrer
 void readFile(vector<Product> &UserProduct)
 {
-    std::ifstream Infile;
-    Infile.open("Products.txt");
+    std::ifstream inFile;
+    inFile.open("Products.txt");
 
-    if (Infile.is_open())
+    if (inFile.is_open())
     {
         Product readFile;
-        Infile >> std::ws;    // moves to nearest non whitespace in the file
-        while (!Infile.eof()) // if its not the end of the file
+        inFile >> std::ws;               // moves to nearest non whitespace in the file
+        while (inFile >> readFile.idNum)
         {
-            Infile >>
-                readFile.idNum >> readFile.name >>
-                readFile.category >> readFile.Units >>
-                readFile.price >> readFile.stock;
+            inFile.ignore();
+            std::getline(inFile, readFile.name);
+            std::getline(inFile, readFile.category);
+            inFile >>
+            readFile.Units >>
+            readFile.price >>
+            readFile.stock;
             UserProduct.push_back(readFile);
         }
-        Infile.close();
+        inFile.close();
     }
     else
     {
@@ -126,7 +129,7 @@ void writeFile(vector<Product> &UserProduct)
                     << Print.category << '\n'
                     << Print.Units << '\n'
                     << Print.price << '\n'
-                    << Print.stock;
+                    << Print.stock << '\n';
         }
         Outfile.close();
     }
@@ -228,7 +231,7 @@ void addProduct(vector<Product> &userProducts)
         //////////////////////////----------New---------/////////////////////////////
         do
         {
-            cout << "Enter Unit  of measurement (Abbreviation Ex. lbs, kg): ";
+            cout << "Enter Unit  of measurement (units, lbs, kg, etc...): ";
             validateStringInput(newProduct.Units);
             if (newProduct.Units.length() > 5)
             {
@@ -408,20 +411,22 @@ void printInventory(vector<Product> &userProducts)
 {
     cout << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
          << "| " << std::setw(20) << "Name"
-         << "| " << std::setw(15) << "Category"
+         << "| " << std::setw(20) << "Category"
          << "| " << std::setw(15) << "Stock"
+         << "| " << std::setw(15) << "Units"
          << "| " << std::setw(15) << "Price"
          << std::endl;
 
-    cout << "===================================================================\n"; // Second row of inventory (Divider Line)
+    cout << "==========================================================================================\n"; // Second row of inventory (Divider Line)
 
     for (auto &product : userProducts) // Third row of inventory (All Products)
     {
 
         cout << "| " << std::setw(6) << product.idNum
              << "| " << std::setw(20) << product.name
-             << "| " << std::setw(15) << product.category
-             << "| " << std::setw(10) << product.stock << std::setw(5) << product.Units
+             << "| " << std::setw(20) << product.category
+             << "| " << std::setw(15) << product.stock 
+             << "| " << std::setw(15) << product.Units
              << "| " << std::setw(0) << "$"
              << std::setw(15) << std::fixed << std::setprecision(2) << product.price
              << std::endl;
@@ -450,7 +455,7 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
                  << "| " << std::setw(15) << "Price"
                  << std::endl;
 
-            cout << "====================================================================================\n";
+            cout << "=================================================================================================\n";
 
             cout << "| " << std::setw(6) << it->idNum
                  << "| " << std::setw(20) << it->name
@@ -538,22 +543,24 @@ void searchProduct(vector<Product> &userProducts)
         if (!searchProduct.empty())
         {
             // Harrys Santiago Santana
-            cout << std::left << "| " << std::setw(6) << "ID"
+            cout << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
                  << "| " << std::setw(20) << "Name"
-                 << "| " << std::setw(15) << "Category"
+                 << "| " << std::setw(20) << "Category"
                  << "| " << std::setw(15) << "Stock"
+                 << "| " << std::setw(15) << "Units"
                  << "| " << std::setw(15) << "Price"
                  << std::endl;
 
-            cout << "====================================================================================\n";
+            cout << "=================================================================================================\n";
             // Keven Paulino Ferrer
             for (Product Search : searchProduct)
             {
                 // Harrys Santiago Santana
                 cout << "| " << std::setw(6) << Search.idNum
                      << "| " << std::setw(20) << Search.name
-                     << "| " << std::setw(15) << Search.category
-                     << "| " << std::setw(10) << Search.stock << std::setw(5) << Search.Units
+                     << "| " << std::setw(20) << Search.category
+                     << "| " << std::setw(15) << Search.stock
+                     << "| " << std::setw(15) << Search.Units
                      << "| " << std::setw(0) << "$"
                      << std::setw(15) << std::fixed << std::setprecision(2) << Search.price
                      << std::endl;

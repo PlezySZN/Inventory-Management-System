@@ -65,13 +65,13 @@ This project is licensed under the MIT License. For more details, see the [LICEN
 ## Versions
 
 - **Version 1.0:** Initial version with basic inventory management functionalities.
+- **Version 1.1:** Added file read functionality to load inventory data from a file.
 
 ## Future Upgrades
 
 We plan to implement the following upgrades in future versions:
 
 - **Better Error Handling and Input Validation:** Improve the robustness of the program by adding more comprehensive error handling and input validation mechanisms.
-- **File Handling with fstream:** Implement functionality to save and load inventory data using file streams (`fstream`) for better data persistence.
 - **Enhanced User Interface:** Develop a more user-friendly interface to improve the overall user experience.
 - **Advanced Search Features:** Add more advanced search capabilities, such as partial matches and filtering options.
 - **Product Categories Management:** Allow users to manage product categories more effectively.
