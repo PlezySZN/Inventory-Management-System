@@ -39,7 +39,7 @@ void validateInput(double &input)
     }
 }
 
-// Harrys Santiago Santana 
+// Harrys Santiago Santana
 void validateInput(int &input) // so that the input can be int
 {
     while (true)
@@ -90,7 +90,7 @@ void validateStringInput(string &input)
 void readFile(vector<Product> &UserProduct)
 {
     std::ifstream inFile;
-    inFile.open("Products.txt");
+    inFile.open("products.txt");
 
     if (inFile.is_open())
     {
@@ -121,7 +121,7 @@ void readFile(vector<Product> &UserProduct)
 void writeFile(vector<Product> &UserProduct)
 {
     std::ofstream Outfile;
-    Outfile.open("Products.txt");
+    Outfile.open("products.txt");
 
     if (Outfile.is_open())
     {
@@ -574,7 +574,7 @@ int main()
 {
     int menuChoice;
     vector<Product> userProducts;
-    std::ofstream Myfile("Products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
+    std::ofstream Myfile("products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
     Myfile.close();
     readFile(userProducts);
     do
