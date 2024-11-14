@@ -277,7 +277,9 @@ void updateProduct(vector<Product> &userProducts)
          << "========Inventory Management System========\n"
          << "==============Updating Product=============\n"
          << "Enter Product ID to update: ";
+    cin >> id;
     validateStringInput(id);
+    validateIdLength(id);
     cin.ignore(); // Clean Buffer
 
     // Search the product in vector 'userProduct' by ID
@@ -485,12 +487,12 @@ void deleteProduct(vector<Product> &userProducts, bool cleared = false)
 
             for (auto i = 0; i < userProducts.size(); ++i) //  loop to access index
             {
-            
+
                 if (itemId.idNum == userProducts[i].idNum) // end loop if found item
                 {
                     // Harrys Santiago Santana
                     found = true;
-                    
+
                     cout << "\n===========================================\n"
                          << "========Inventory Management System========\n"
                          << "==============Deleting Product=============\n\n"
@@ -521,22 +523,26 @@ void deleteProduct(vector<Product> &userProducts, bool cleared = false)
                     cout << "You sure to delete it? [Y/N]: ";
                     cin >> confirm;
                     confirm = toupper(confirm);
+                    cin.ignore(1000, '\n');
 
                     if (confirm == 'Y')
                     {
                         userProducts.erase(userProducts.begin() + i); // remove the product
                         cout << "Product successfully deleted." << endl;
                     }
-                    else // cancel delete process
+                    else if (clearInv == 'N')
                     {
-                        cout << "\n===========================\n"
-                             << "=====Delete Cancelled======\n"
-                             << "===========================\n";
+                        cout << "Deletion cancelled." << endl;
+                        break;
+                    }
+                    else
+                    {
+                        cout << "ERROR: Invalid input. Please try again.\n";
                         break;
                     }
                 }
             }
-            
+
             if (found == false) //
             {
                 cout << "\n=========================================\n"
@@ -551,17 +557,19 @@ void deleteProduct(vector<Product> &userProducts, bool cleared = false)
             cout << "\nAre you sure to delete all? [Y/N]: ";
             cin >> clearInv;
             clearInv = toupper(clearInv);
+            cin.ignore(1000, '\n');
             if (clearInv == 'Y')
             {
                 userProducts.clear();
                 cout << "Inventory successfully cleared." << endl;
                 return;
+            } else if (clearInv == 'N') {
+                cout << "Clearing inventory cancelled." << endl;
+                break;
             }
             else
             {
-                cout << "\n===========================\n"
-                     << "=====Delete Cancelled======\n"
-                     << "===========================\n";
+                cout << "ERROR: Invalid input. Please try again.\n";
                 break;
             }
         case 3:
@@ -744,7 +752,8 @@ int main()
             if (!userProducts.empty())
             {
                 deleteProduct(userProducts);
-                if (userProducts.empty()) {
+                if (userProducts.empty())
+                {
                     cleared = true;
                 }
             }
