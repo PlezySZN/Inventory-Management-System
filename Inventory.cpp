@@ -21,7 +21,20 @@ const int MAX_NAME_LENGTH = 20;
 const int ID_LENGTH = 4;
 
 // Harrys Santiago Santana
-void validateInput(double &input)
+void validateIdLength(string &id)
+{
+    while (id.length() != ID_LENGTH)
+    {
+        cout << "\n=============================================\n";
+        cout << "=====ERROR: ID number must have 4 digits=====\n";
+        cout << "=============================================\n";
+        cout << "Enter Identification Number (----): ";
+        std::getline(cin, id);
+    }
+}
+
+// Harrys Santiago Santana
+void validateInput(double &input) // Validate double input
 {
     while (true)
     {
@@ -40,7 +53,7 @@ void validateInput(double &input)
 }
 
 // Harrys Santiago Santana
-void validateInput(int &input) // so that the input can be int
+void validateInput(int &input) // Validate int input
 {
     while (true)
     {
@@ -111,9 +124,9 @@ void readFile(vector<Product> &UserProduct)
     }
     else
     {
-        cout << "\n===========================================\n"
-             << "======Failed to open file for reading======\n"
-             << "===========================================\n";
+        cout << "\n==================================================\n"
+             << "======ERROR: Failed to open file for reading======\n"
+             << "==================================================\n";
     }
 }
 
@@ -139,9 +152,9 @@ void writeFile(vector<Product> &UserProduct)
     }
     else
     {
-        cout << "\n===========================================\n";
-        cout << "======Failed to open file for writing======\n";
-        cout << "===========================================\n";
+        cout << "\n==================================================\n";
+        cout << "======ERROR: Failed to open file for writing======\n";
+        cout << "==================================================\n";
     }
 }
 
@@ -173,12 +186,9 @@ void addProduct(vector<Product> &userProducts)
                      << "================================================\n\n";
                 newProduct.idNum = "";
             }
-
-            if (newProduct.idNum.length() != ID_LENGTH)
+            else
             {
-                cout << "\n===========================================================\n"
-                     << "=====ERROR: ID Can't be more or less than 4 characters=====\n"
-                     << "===========================================================\n";
+                validateIdLength(newProduct.idNum);
             }
 
         } while (newProduct.idNum.length() != ID_LENGTH);
@@ -256,108 +266,6 @@ void addProduct(vector<Product> &userProducts)
     } while (continuar == 'Y');
 }
 
-void deleteProduct(vector<Product> &userProducts)
-{
-     int answer;
- int sizeId;
- char back, clearInv;
- bool found = false;
- Product itemId, itemName;
-    
-
-    do {
-        cout << "======================================\n";
-        cout << "============= DELETE MENU ============\n";
-        cout << "======================================\n";
-        
-     do {
-         cout << "\n Choose An Option\n 1- Delete product\n 2- Clear Inventory\n 3- Cancel Delete \n Enter Your Choice: ";
-         cin >> answer;
-         cin.ignore();
-         if (answer < 1 || answer > 3)//if user enter a invalid option
-                {
-                    cout<<"======================================================"<<endl;
-                    cout<<"============ERROR:Chose an option from the menu.======"<<endl;
-                    cout<<"======================================================"<<endl;
-                    break;
-                }
-
-        } while (answer < 1 || answer > 3);
-               
-
-        switch (answer) {
-
-           case 1: // delete product by id
-             cout << "Product Id: \n";
-             cin >> itemId.idNum;
-               if(itemId.idNum.length() != 4)
-                            {
-                                cout<<"===================================\n";
-                                cout<<"======ID NUM MUST HAVE 4 DIGITS====\n";
-                                cout<<"===================================\n";
-                                break;
-                            }
-
-             for (auto i = 0; i < userProducts.size(); ++i)//  loop to access index
-                {
-                 if (itemId.idNum == userProducts[i].idNum) // end loop if foud item
-                    {
-                     found = true;
-                     cout<<"===================================\n";
-                     cout<<"=========Product to delete=========\n";
-                     cout<<"===================================\n";
-                     cout << " ID  " << " Name " << " Category " << endl;
-                     cout<< userProducts.at(i).idNum <<"  "<<userProducts.at(i).name<<"   "<<userProducts.at(i).category<<endl; //delete product confirmation
-                     cout<<"You sure to delete it? [Y/N]: ";
-                     char confirm;
-                     cin>>confirm;
-                     confirm= toupper(confirm);
-                     if (confirm =='Y')
-                     {
-                        userProducts.erase(userProducts.begin() + i);  // remove the product
-                        cout << "Product deleted."<<endl; 
-                        
-                     } else // cancel delete proces
-                       {
-                         cout << "==========================\n";
-                         cout << "=======Delete Canceled====\n";
-                         cout << "==========================\n";
-                         break;
-                        }
-                    }
-
-                }  if(found == false) //
-                    {
-                        cout << "=======Product not found =======\n";
-
-                        break;
-                    }
-
-                    return;
-            case 2: //delete all inventory
-                
-                   cout<<"Are you sure to delete all? [Y/N]: ";
-                    cin>>clearInv;
-                     clearInv = toupper(clearInv);
-                    if(clearInv == 'Y'){
-                        
-                         userProducts.clear();
-
-                        cout<<"All Inventary Was Deleted"<<endl;
-                    }else{
-                    
-                        break;
-                    }
-            case 3: 
-                    cout << "=======Canceling delete operation====\n";
-                break;
-            
-            }
-
-
-    }while(answer != 3); // Exit the delete menu
-}
-
 // Harrys Santiago Santana
 void updateProduct(vector<Product> &userProducts)
 {
@@ -369,7 +277,7 @@ void updateProduct(vector<Product> &userProducts)
          << "========Inventory Management System========\n"
          << "==============Updating Product=============\n"
          << "Enter Product ID to update: ";
-    cin >> id;
+    validateStringInput(id);
     cin.ignore(); // Clean Buffer
 
     // Search the product in vector 'userProduct' by ID
@@ -507,7 +415,8 @@ void updateProduct(vector<Product> &userProducts)
 // Harrys Santiago Santana
 void printInventory(vector<Product> &userProducts)
 {
-    cout << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
+    cout << "\n"
+         << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
          << "| " << std::setw(20) << "Name"
          << "| " << std::setw(20) << "Category"
          << "| " << std::setw(15) << "Stock"
@@ -515,7 +424,7 @@ void printInventory(vector<Product> &userProducts)
          << "| " << std::setw(15) << "Price"
          << std::endl;
 
-    cout << "==========================================================================================\n"; // Second row of inventory (Divider Line)
+    cout << "===============================================================================================\n"; // Second row of inventory (Divider Line)
 
     for (auto &product : userProducts) // Third row of inventory (All Products)
     {
@@ -529,6 +438,138 @@ void printInventory(vector<Product> &userProducts)
              << std::setw(15) << std::fixed << std::setprecision(2) << product.price
              << std::endl;
     }
+    cout << "===============================================================================================\n"; // Fourth row of inventory (End Line)
+}
+
+// Miguel Monsalve Valencia || @refactorized_by Harrys Santiago Santana
+void deleteProduct(vector<Product> &userProducts, bool cleared = false)
+{
+    int answer;
+    int sizeId;
+    char back, clearInv;
+    bool found = false;
+    Product itemId, itemName;
+
+    do
+    {
+        cout << "\n===========================================\n"
+             << "========Inventory Management System========\n"
+             << "==============Deleting Product=============\n";
+        do
+        {
+            cout << "1- Delete product\n"
+                    "2- Clear Inventory\n"
+                    "3- Exit \n"
+                    "Enter Your Choice: ";
+
+            validateInput(answer);
+            cin.ignore();
+
+            if (answer < 1 || answer > 3) // if user enter a invalid option
+            {
+                cout << "\n=============================================================\n"
+                     << "======ERROR: Invalid choice. Please select 1, 2, or 3.======\n"
+                     << "============================================================\n";
+                break;
+            }
+
+        } while (answer < 1 || answer > 3);
+
+        switch (answer)
+        {
+        case 1: // delete product by id
+            cout << "Enter the ID of the product to delete: ";
+
+            validateStringInput(itemId.idNum);
+            validateIdLength(itemId.idNum);
+
+            for (auto i = 0; i < userProducts.size(); ++i) //  loop to access index
+            {
+            
+                if (itemId.idNum == userProducts[i].idNum) // end loop if found item
+                {
+                    // Harrys Santiago Santana
+                    found = true;
+                    
+                    cout << "\n===========================================\n"
+                         << "========Inventory Management System========\n"
+                         << "==============Deleting Product=============\n\n"
+                         << "The following product will be deleted:\n";
+
+                    cout << "\n"
+                         << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
+                         << "| " << std::setw(20) << "Name"
+                         << "| " << std::setw(20) << "Category"
+                         << "| " << std::setw(15) << "Stock"
+                         << "| " << std::setw(15) << "Units"
+                         << "| " << std::setw(15) << "Price"
+                         << std::endl;
+
+                    cout << "===============================================================================================\n"; // Second row of inventory (Divider Line)
+
+                    cout << "| " << std::setw(6) << userProducts.at(i).idNum
+                         << "| " << std::setw(20) << userProducts.at(i).name
+                         << "| " << std::setw(20) << userProducts.at(i).category
+                         << "| " << std::setw(15) << userProducts.at(i).stock
+                         << "| " << std::setw(15) << userProducts.at(i).Units
+                         << "| " << std::setw(0) << "$"
+                         << std::setw(15) << std::fixed << std::setprecision(2) << userProducts.at(i).price
+                         << "\n\n";
+
+                    // Miguel Monsalve Valencia
+                    char confirm;
+                    cout << "You sure to delete it? [Y/N]: ";
+                    cin >> confirm;
+                    confirm = toupper(confirm);
+
+                    if (confirm == 'Y')
+                    {
+                        userProducts.erase(userProducts.begin() + i); // remove the product
+                        cout << "Product successfully deleted." << endl;
+                    }
+                    else // cancel delete process
+                    {
+                        cout << "\n===========================\n"
+                             << "=====Delete Cancelled======\n"
+                             << "===========================\n";
+                        break;
+                    }
+                }
+            }
+            
+            if (found == false) //
+            {
+                cout << "\n=========================================\n"
+                     << "===========ERROR: ID not found===========\n"
+                     << "=========================================\n";
+                break;
+            }
+            return;
+        case 2: // delete all inventory
+            cout << "\nWARNING: YOU ARE ABOUT TO DELETE ALL INVENTORY.\n";
+            printInventory(userProducts);
+            cout << "\nAre you sure to delete all? [Y/N]: ";
+            cin >> clearInv;
+            clearInv = toupper(clearInv);
+            if (clearInv == 'Y')
+            {
+                userProducts.clear();
+                cout << "Inventory successfully cleared." << endl;
+                return;
+            }
+            else
+            {
+                cout << "\n===========================\n"
+                     << "=====Delete Cancelled======\n"
+                     << "===========================\n";
+                break;
+            }
+        case 3:
+            cout << "\nExiting delete menu...\n";
+            break;
+        }
+
+    } while (answer != 3); // Exit the delete menu
 }
 
 // Keven Paulino Ferrer
@@ -553,7 +594,7 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
                  << "| " << std::setw(15) << "Price"
                  << std::endl;
 
-            cout << "=================================================================================================\n";
+            cout << "======================================================================================================\n";
 
             cout << "| " << std::setw(6) << it->idNum
                  << "| " << std::setw(20) << it->name
@@ -562,6 +603,8 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
                  << "| " << std::setw(0) << "$"
                  << std::setw(15) << std::fixed << std::setprecision(2) << it->price
                  << std::endl;
+
+            cout << "===============================================================================================\n";
         }
         else
         {
@@ -671,6 +714,7 @@ void searchProduct(vector<Product> &userProducts)
 int main()
 {
     int menuChoice;
+    bool cleared = false;
     vector<Product> userProducts;
     std::ofstream Myfile("products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
     Myfile.close();
@@ -700,6 +744,9 @@ int main()
             if (!userProducts.empty())
             {
                 deleteProduct(userProducts);
+                if (userProducts.empty()) {
+                    cleared = true;
+                }
             }
             break;
         case 3:
@@ -721,6 +768,7 @@ int main()
             }
             break;
         case 6:
+            cout << "Exiting program...\n";
             break;
         default:
             cout << "Invalid choice. Please try again.\n";
