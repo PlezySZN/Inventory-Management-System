@@ -441,7 +441,7 @@ void printInventory(vector<Product> &userProducts)
     cout << "===============================================================================================\n"; // Fourth row of inventory (End Line)
 }
 
-// Miguel Monsalve Valencia || @refactorized_by Harrys Santiago Santana
+// Miguel Monsalve Valencia && Optimized_by @Harrys Santiago Santana
 void deleteProduct(vector<Product> &userProducts, bool cleared = false)
 {
     int answer;
