@@ -256,8 +256,106 @@ void addProduct(vector<Product> &userProducts)
     } while (continuar == 'Y');
 }
 
-void deleteProduct()
+void deleteProduct(vector<Product> &userProducts)
 {
+     int answer;
+ int sizeId;
+ char back, clearInv;
+ bool found = false;
+ Product itemId, itemName;
+    
+
+    do {
+        cout << "======================================\n";
+        cout << "============= DELETE MENU ============\n";
+        cout << "======================================\n";
+        
+     do {
+         cout << "\n Choose An Option\n 1- Delete product\n 2- Clear Inventory\n 3- Cancel Delete \n Enter Your Choice: ";
+         cin >> answer;
+         cin.ignore();
+         if (answer < 1 || answer > 3)//if user enter a invalid option
+                {
+                    cout<<"======================================================"<<endl;
+                    cout<<"============ERROR:Chose an option from the menu.======"<<endl;
+                    cout<<"======================================================"<<endl;
+                    break;
+                }
+
+        } while (answer < 1 || answer > 3);
+               
+
+        switch (answer) {
+
+           case 1: // delete product by id
+             cout << "Product Id: \n";
+             cin >> itemId.idNum;
+               if(itemId.idNum.length() != 4)
+                            {
+                                cout<<"===================================\n";
+                                cout<<"======ID NUM MUST HAVE 4 DIGITS====\n";
+                                cout<<"===================================\n";
+                                break;
+                            }
+
+             for (auto i = 0; i < userProducts.size(); ++i)//  loop to access index
+                {
+                 if (itemId.idNum == userProducts[i].idNum) // end loop if foud item
+                    {
+                     found = true;
+                     cout<<"===================================\n";
+                     cout<<"=========Product to delete=========\n";
+                     cout<<"===================================\n";
+                     cout << " ID  " << " Name " << " Category " << endl;
+                     cout<< userProducts.at(i).idNum <<"  "<<userProducts.at(i).name<<"   "<<userProducts.at(i).category<<endl; //delete product confirmation
+                     cout<<"You sure to delete it? [Y/N]: ";
+                     char confirm;
+                     cin>>confirm;
+                     confirm= toupper(confirm);
+                     if (confirm =='Y')
+                     {
+                        userProducts.erase(userProducts.begin() + i);  // remove the product
+                        cout << "Product deleted."<<endl; 
+                        
+                     } else // cancel delete proces
+                       {
+                         cout << "==========================\n";
+                         cout << "=======Delete Canceled====\n";
+                         cout << "==========================\n";
+                         break;
+                        }
+                    }
+
+                }  if(found == false) //
+                    {
+                        cout << "=======Product not found =======\n";
+
+                        break;
+                    }
+
+                    return;
+            case 2: //delete all inventory
+                
+                   cout<<"Are you sure to delete all? [Y/N]: ";
+                    cin>>clearInv;
+                     clearInv = toupper(clearInv);
+                    if(clearInv == 'Y'){
+                        
+                         userProducts.clear();
+
+                        cout<<"All Inventary Was Deleted"<<endl;
+                    }else{
+                    
+                        break;
+                    }
+            case 3: 
+                    cout << "=======Canceling delete operation====\n";
+                break;
+            
+            }
+
+
+    }while(answer != 3); // Exit the delete menu
 }
 
 // Harrys Santiago Santana
@@ -601,7 +699,7 @@ int main()
         case 2:
             if (!userProducts.empty())
             {
-                deleteProduct();
+                deleteProduct(userProducts);
             }
             break;
         case 3:
