@@ -722,7 +722,6 @@ void searchProduct(vector<Product> &userProducts)
 int main()
 {
     int menuChoice;
-    bool cleared = false;
     vector<Product> userProducts;
     std::ofstream Myfile("products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
     Myfile.close();
@@ -752,10 +751,6 @@ int main()
             if (!userProducts.empty())
             {
                 deleteProduct(userProducts);
-                if (userProducts.empty())
-                {
-                    cleared = true;
-                }
             }
             break;
         case 3:
