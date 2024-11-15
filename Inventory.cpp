@@ -186,11 +186,12 @@ void addProduct(vector<Product> &userProducts)
                      << "================================================\n\n";
                 newProduct.idNum = "";
             }
-            else
+            else if (newProduct.idNum.length() != ID_LENGTH)
             {
-                validateIdLength(newProduct.idNum);
+                cout << "\n=============================================\n";
+                cout << "=====ERROR: ID number must have 4 digits=====\n";
+                cout << "=============================================\n";
             }
-
         } while (newProduct.idNum.length() != ID_LENGTH);
 
         cout << "Enter Name of the Product: ";
@@ -430,7 +431,6 @@ void printInventory(vector<Product> &userProducts)
 
     for (auto &product : userProducts) // Third row of inventory (All Products)
     {
-
         cout << "| " << std::setw(6) << product.idNum
              << "| " << std::setw(20) << product.name
              << "| " << std::setw(20) << product.category
@@ -444,7 +444,7 @@ void printInventory(vector<Product> &userProducts)
 }
 
 // Miguel Monsalve Valencia && Optimized_by @Harrys Santiago Santana
-void deleteProduct(vector<Product> &userProducts, bool cleared = false)
+void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
 {
     int answer;
     int sizeId;
@@ -528,6 +528,10 @@ void deleteProduct(vector<Product> &userProducts, bool cleared = false)
                     if (confirm == 'Y')
                     {
                         userProducts.erase(userProducts.begin() + i); // remove the product
+                        if (userProducts.empty())
+                        {
+                            inventoryEmpty = false;
+                        }
                         cout << "Product successfully deleted." << endl;
                     }
                     else if (clearInv == 'N')
@@ -562,8 +566,10 @@ void deleteProduct(vector<Product> &userProducts, bool cleared = false)
             {
                 userProducts.clear();
                 cout << "Inventory successfully cleared." << endl;
-                return;
-            } else if (clearInv == 'N') {
+                inventoryEmpty = true;
+            }
+            else if (clearInv == 'N')
+            {
                 cout << "Clearing inventory cancelled." << endl;
                 break;
             }
@@ -595,10 +601,12 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
 
         if (it != userProducts.end()) // If found
         {
-            cout << std::left << "| " << std::setw(6) << "ID"
+            cout << "\n"
+                 << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
                  << "| " << std::setw(20) << "Name"
-                 << "| " << std::setw(15) << "Category"
+                 << "| " << std::setw(20) << "Category"
                  << "| " << std::setw(15) << "Stock"
+                 << "| " << std::setw(15) << "Units"
                  << "| " << std::setw(15) << "Price"
                  << std::endl;
 
@@ -606,13 +614,14 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
 
             cout << "| " << std::setw(6) << it->idNum
                  << "| " << std::setw(20) << it->name
-                 << "| " << std::setw(15) << it->category
-                 << "| " << std::setw(10) << it->stock << std::setw(5) << it->Units
+                 << "| " << std::setw(20) << it->category
+                 << "| " << std::setw(15) << it->stock
+                 << "| " << std::setw(15) << it->Units
                  << "| " << std::setw(0) << "$"
                  << std::setw(15) << std::fixed << std::setprecision(2) << it->price
                  << std::endl;
 
-            cout << "===============================================================================================\n";
+            cout << "======================================================================================================\n";
         }
         else
         {
@@ -662,6 +671,7 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
         }
     }
 }
+
 // Keven Paulino Ferrer
 void searchProduct(vector<Product> &userProducts)
 {
@@ -722,6 +732,7 @@ void searchProduct(vector<Product> &userProducts)
 int main()
 {
     int menuChoice;
+    bool inventoryEmpty = false;
     vector<Product> userProducts;
     std::ofstream Myfile("products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
     Myfile.close();
@@ -748,28 +759,36 @@ int main()
             addProduct(userProducts);
             break;
         case 2:
-            if (!userProducts.empty())
+            if (userProducts.empty())
             {
-                deleteProduct(userProducts);
+                inventoryEmpty = true;
+                break;
             }
+            deleteProduct(userProducts);
             break;
         case 3:
-            if (!userProducts.empty())
+            if (userProducts.empty())
             {
-                updateProduct(userProducts);
+                inventoryEmpty = true;
+                break;
             }
+            updateProduct(userProducts);
             break;
         case 4:
-            if (!userProducts.empty())
+            if (userProducts.empty())
             {
-                searchProduct(userProducts);
+                inventoryEmpty = true;
+                break;
             }
+            searchProduct(userProducts);
             break;
         case 5:
-            if (!userProducts.empty())
+            if (userProducts.empty())
             {
-                printInventory(userProducts);
+                inventoryEmpty = true;
+                break;
             }
+            printInventory(userProducts);
             break;
         case 6:
             cout << "Exiting program...\n";
@@ -778,7 +797,7 @@ int main()
             cout << "Invalid choice. Please try again.\n";
             break;
         }
-        if (userProducts.empty())
+        if (userProducts.empty() && inventoryEmpty == true)
         {
             cout << "\n============================================\n"
                  << "============Error: No Products==============\n"
