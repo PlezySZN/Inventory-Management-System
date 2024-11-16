@@ -76,6 +76,7 @@ We plan to implement the following upgrades in future versions:
 - **Advanced Search Features:** Add more advanced search capabilities, such as partial matches and filtering options.
 - **Product Categories Management:** Allow users to manage product categories more effectively.
 - **Reporting and Analytics:** Provide reporting and analytics features to give users insights into their inventory data.
+- **Use `unordered_map`:** Utilize `unordered_map` for faster search operations, improving the overall performance of the program.
 
 Stay tuned for these and other exciting features in future releases!
 
