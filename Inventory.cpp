@@ -773,6 +773,7 @@ int main()
             {
                 deleteProduct(userProducts);
                 inventoryEmpty = false;
+                break;
             }
         case 3:
             if (!userProducts.empty())
