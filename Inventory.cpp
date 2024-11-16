@@ -528,10 +528,6 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
                     if (confirm == 'Y')
                     {
                         userProducts.erase(userProducts.begin() + i); // remove the product
-                        if (userProducts.empty())
-                        {
-                            inventoryEmpty = false;
-                        }
                         cout << "Product successfully deleted." << endl;
                     }
                     else if (clearInv == 'N')
@@ -566,7 +562,6 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
             {
                 userProducts.clear();
                 cout << "Inventory successfully cleared." << endl;
-                inventoryEmpty = true;
             }
             else if (clearInv == 'N')
             {
@@ -754,41 +749,38 @@ int main()
 
         switch (menuChoice)
         {
-
         case 1:
             addProduct(userProducts);
             break;
         case 2:
+
             if (userProducts.empty())
             {
                 inventoryEmpty = true;
                 break;
             }
-            deleteProduct(userProducts);
-            break;
+            else
+            {
+                deleteProduct(userProducts);
+                inventoryEmpty = false;
+            }
         case 3:
-            if (userProducts.empty())
+            if (!userProducts.empty())
             {
-                inventoryEmpty = true;
-                break;
+                updateProduct(userProducts);
             }
-            updateProduct(userProducts);
             break;
         case 4:
-            if (userProducts.empty())
+            if (!userProducts.empty())
             {
-                inventoryEmpty = true;
-                break;
+                searchProduct(userProducts);
             }
-            searchProduct(userProducts);
             break;
         case 5:
-            if (userProducts.empty())
+            if (!userProducts.empty())
             {
-                inventoryEmpty = true;
-                break;
+                printInventory(userProducts);
             }
-            printInventory(userProducts);
             break;
         case 6:
             cout << "Exiting program...\n";
@@ -796,6 +788,10 @@ int main()
         default:
             cout << "Invalid choice. Please try again.\n";
             break;
+        }
+        if (menuChoice < 6 && menuChoice > 0 && menuChoice != 2)
+        {
+            inventoryEmpty = true;
         }
         if (userProducts.empty() && inventoryEmpty == true)
         {
