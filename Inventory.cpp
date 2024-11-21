@@ -278,10 +278,8 @@ void updateProduct(vector<Product> &userProducts)
          << "========Inventory Management System========\n"
          << "==============Updating Product=============\n"
          << "Enter Product ID to update: ";
-    cin >> id;
     validateStringInput(id);
     validateIdLength(id);
-    cin.ignore(); // Clean Buffer
 
     // Search the product in vector 'userProduct' by ID
     auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &userProduct)
