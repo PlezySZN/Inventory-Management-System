@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <fstream>
+#include <stdlib.h>
 
 using std::vector, std::string, std::cout, std::cin, std::endl;
 
@@ -12,74 +13,49 @@ struct Product
     string idNum;
     string name;
     string category;
-    string Units;
+    string unit;
     double price;
     double stock;
 };
 
 const int MAX_NAME_LENGTH = 20;
 const int ID_LENGTH = 4;
+const int MAX_CATEGORY_LENGTH = 20;
+const int MAX_UNIT_LENGTH = 5;
+const double MIN_PRICE = 0.0;
+const double MIN_STOCK = 0.0;
 
-// Harrys Santiago Santana
-void validateIdLength(string &id)
+void clearScreen()
 {
-    while (id.length() != ID_LENGTH)
+    for (int i = 0; i < 50; ++i)
     {
-        cout << "\n=============================================\n";
-        cout << "=====ERROR: ID number must have 4 digits=====\n";
-        cout << "=============================================\n";
-        cout << "Enter Identification Number (----): ";
-        std::getline(cin, id);
+        std::cout << "\n";
     }
+    system("cls");
 }
 
 // Harrys Santiago Santana
-void validateInput(double &input) // Validate double input
+template <typename T>
+void validateInput(T &input) // Validate double input
 {
     while (true)
     {
         cin >> input;
         if (cin.fail())
         {
+            clearScreen();
             cin.clear();
             cin.ignore(1000, '\n');
-            cout << "Invalid input. Please enter a number: ";
+            cout << "\n==============================\n";
+            cout << "=====ERROR: Invalid input=====\n";
+            cout << "==============================\n\n";
+            cout << "Please enter a valid input: ";
         }
         else
         {
             break;
         }
     }
-}
-
-// Harrys Santiago Santana
-void validateInput(int &input) // Validate int input
-{
-    while (true)
-    {
-        cin >> input;
-        if (cin.fail())
-        {
-            cin.clear();
-            cin.ignore(1000, '\n');
-            cout << "Invalid input. Please enter a number: ";
-        }
-        else
-        {
-            break;
-        }
-    }
-}
-
-// Harrys Santiago Santana
-int getUserChoice(int &input)
-{
-    cout << "1. Update product \n"
-         << "2. Don't make changes.\n\n"
-         << "Enter your choice: ";
-    cin >> input;
-    cin.ignore();
-    return input;
 }
 
 // Harrys Santiago Santana
@@ -90,12 +66,100 @@ void validateStringInput(string &input)
         std::getline(cin, input);
         if (input.empty())
         {
-            cout << "Invalid input. Please enter a valid string: ";
+            clearScreen();
+            cout << "\n==============================\n";
+            cout << "=====ERROR: Invalid input=====\n";
+            cout << "==============================\n";
+            cout << "Please enter a valid string: ";
         }
         else
         {
             break;
         }
+    }
+}
+
+// Harrys Santiago Santana
+void validateIdLength(string &id)
+{
+    while (id.length() != ID_LENGTH)
+    {
+        clearScreen();
+        cout << "\n=============================================\n";
+        cout << "=====ERROR: ID number must have 4 digits=====\n";
+        cout << "=============================================\n";
+        cout << "Enter Identification Number (----): ";
+        validateStringInput(id);
+    }
+}
+
+// Harrys Santiago Santana
+void validateNameLength(string &name)
+{
+    while (name.length() > MAX_NAME_LENGTH)
+    {
+        clearScreen();
+        cout << "=======================================================\n";
+        cout << "=====ERROR: Name must have less than 20 characters=====\n";
+        cout << "=======================================================\n";
+        cout << "Enter Name of the Product: ";
+        validateStringInput(name);
+    }
+}
+
+// Harrys Santiago Santana
+void validateCategoryLength(string &category)
+{
+    while (category.length() > MAX_CATEGORY_LENGTH)
+    {
+        clearScreen();
+        cout << "=============================================================\n";
+        cout << "=====ERROR: Category Can't have more than 20 characters======\n";
+        cout << "=============================================================\n";
+        cout << "Enter the category (food, drink, etc...): ";
+        validateStringInput(category);
+    }
+}
+
+// Harrys Santiago Santana
+void validatePrice(double &price)
+{
+    while (price < MIN_PRICE)
+    {
+        clearScreen();
+        cout << "\n===========================================\n";
+        cout << "=====ERROR: Price Can't be Less than 0=====\n";
+        cout << "===========================================\n";
+        cout << "Enter the Price of the Product: ";
+        validateInput(price);
+    }
+}
+
+// Harrys Santiago Santana
+void validateStock(double &stock)
+{
+    while (stock < MIN_STOCK)
+    {
+        clearScreen();
+        cout << "\n===========================================\n";
+        cout << "=====ERROR: Stock Can't be Less than 0=====\n";
+        cout << "===========================================\n";
+        cout << "Enter the Amount in Stock: ";
+        validateInput(stock);
+    }
+}
+
+// Harrys Santiago Santana
+void validateUnitLength(string &unit)
+{
+    while (unit.length() > MAX_UNIT_LENGTH)
+    {
+        clearScreen();
+        cout << "\n=========================================================\n";
+        cout << "=====ERROR: Units Can't have more than 5 characters======\n";
+        cout << "=========================================================\n";
+        cout << "Enter Unit  of measurement (units, lbs, kg, etc...): ";
+        validateStringInput(unit);
     }
 }
 
@@ -115,7 +179,7 @@ void readFile(vector<Product> &UserProduct)
             std::getline(inFile, readFile.name);
             std::getline(inFile, readFile.category);
             inFile >>
-                readFile.Units >>
+                readFile.unit >>
                 readFile.price >>
                 readFile.stock;
             UserProduct.push_back(readFile);
@@ -131,7 +195,7 @@ void readFile(vector<Product> &UserProduct)
 }
 
 // Keven Paulino Ferrer
-void writeFile(vector<Product> &UserProduct)
+void writeFile(const vector<Product> &UserProduct)
 {
     std::ofstream Outfile;
     Outfile.open("products.txt");
@@ -144,7 +208,7 @@ void writeFile(vector<Product> &UserProduct)
                     << Print.idNum << '\n'
                     << Print.name << '\n'
                     << Print.category << '\n'
-                    << Print.Units << '\n'
+                    << Print.unit << '\n'
                     << Print.price << '\n'
                     << Print.stock << '\n';
         }
@@ -158,263 +222,8 @@ void writeFile(vector<Product> &UserProduct)
     }
 }
 
-// Keven Paulino Ferrer
-void addProduct(vector<Product> &userProducts)
-{
-    Product newProduct;
-    char continuar;
-
-    do
-    {
-        cout << "\n===========================================\n"
-             << "========Inventory Management System========\n"
-             << "=================Add Product===============\n";
-
-        do
-        {
-            cout << "Enter Identification Number (----): ";
-            std::getline(cin, newProduct.idNum);
-
-            // Harrys Santiago Santana
-            auto it = std::find_if(userProducts.begin(), userProducts.end(), [&newProduct](Product &userProduct)
-                                   { return userProduct.idNum == newProduct.idNum; });
-
-            if (it != userProducts.end())
-            {
-                cout << "\n================================================\n"
-                     << "=======ERROR: ID " << it->idNum << " Its already in Use========\n"
-                     << "================================================\n\n";
-                newProduct.idNum = "";
-            }
-            else if (newProduct.idNum.length() != ID_LENGTH)
-            {
-                cout << "\n=============================================\n";
-                cout << "=====ERROR: ID number must have 4 digits=====\n";
-                cout << "=============================================\n";
-            }
-        } while (newProduct.idNum.length() != ID_LENGTH);
-
-        cout << "Enter Name of the Product: ";
-        validateStringInput(newProduct.name);
-        if (newProduct.name.length() > MAX_NAME_LENGTH)
-        {
-            cout << "\n=========================================================\n"
-                 << "=====ERROR: Name Can't have more than 20 characters======\n"
-                 << "=========================================================\n";
-            continue;
-        }
-
-        cout << "Enter the category (food, drink, etc...): ";
-        validateStringInput(newProduct.category);
-
-        do
-        {
-            cout << "Enter the Price of the Product:";
-
-            // Harrys Santiago Santana
-            validateInput(newProduct.price);
-            cin.ignore();
-
-            // Keven Paulino Ferrer
-            if (newProduct.price < 0)
-            {
-                cout << "\n===========================================\n"
-                     << "=====ERROR: Price Can't be Less than 0======\n"
-                     << "===========================================\n";
-            }
-        } while (newProduct.price < 0);
-
-        do
-        {
-            cout << "Enter the Amount in Stock:";
-
-            // Harrys Santiago Santana
-            validateInput(newProduct.stock);
-            cin.ignore();
-
-            // Keven Paulino Ferrer
-            if (newProduct.stock < 0)
-            {
-                cout << "\n============================================\n"
-                     << "======ERROR: Stock Can't be Less tha 0======\n"
-                     << "============================================\n";
-            }
-
-        } while (newProduct.stock < 0);
-        do
-        {
-            cout << "Enter Unit  of measurement (units, lbs, kg, etc...): ";
-            validateStringInput(newProduct.Units);
-            if (newProduct.Units.length() > 5)
-            {
-                cout << "\n=========================================================\n"
-                     << "=====ERROR: Units Can't have more than 5 characters======\n"
-                     << "=========================================================\n";
-            }
-
-        } while (newProduct.Units.length() > 5);
-
-        userProducts.push_back(newProduct);
-
-        cout << "Do You Wish to Continue Adding Products (Y/N)";
-        cin >> continuar;
-        cin.ignore();
-        continuar = toupper(continuar);
-        if (continuar == 'N')
-        {
-            break;
-        }
-    } while (continuar == 'Y');
-}
-
 // Harrys Santiago Santana
-void updateProduct(vector<Product> &userProducts)
-{
-    // Create a variable to search if 'id' is = to 'idNum' on userProducts
-    string id;
-    int userChoice;
-
-    cout << "\n===========================================\n"
-         << "========Inventory Management System========\n"
-         << "==============Updating Product=============\n"
-         << "Enter Product ID to update: ";
-    validateStringInput(id);
-    validateIdLength(id);
-
-    // Search the product in vector 'userProduct' by ID
-    auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &userProduct)
-                      { return userProduct.idNum == id; });
-
-    // If product is found, proceed to update its details
-    if (it != userProducts.end())
-    {
-        string newName;
-        string newCategory;
-        string newUnits;
-        double newStock;
-        double newPrice;
-
-        // Show current product details
-        cout << "\n===========================================\n"
-             << "Current product name: " << it->name << endl
-             << "============================================\n";
-        getUserChoice(userChoice);
-
-        if (userChoice == 1)
-        {
-            cout << "Enter product name to update: ";
-            std::getline(cin, newName);
-            it->name = newName;
-        }
-        else if (userChoice == 2)
-        {
-            cout << "No changes made." << endl;
-        }
-
-        cout << "\n===========================================\n"
-             << "Current product category: " << it->category << endl
-             << "============================================\n";
-        getUserChoice(userChoice);
-
-        if (userChoice == 1)
-        {
-            cout << "Enter product category to update: ";
-            std::getline(cin, newCategory);
-            it->category = newCategory;
-        }
-        else if (userChoice == 2)
-        {
-            cout << "No changes made." << endl;
-        }
-
-        cout << "\n===========================================\n"
-             << "Current price: $" << std::fixed << std::setprecision(2) << it->price << endl
-             << "============================================\n\n";
-        getUserChoice(userChoice);
-
-        if (userChoice == 1)
-        {
-            do
-            {
-                cout << "Enter product stock to update: ";
-                validateInput(newPrice);
-
-                if (newPrice < 0)
-                {
-                    cout << "\n============================================\n"
-                         << "======ERROR: Price Can't be Less tha 0======\n"
-                         << "============================================\n";
-                }
-
-            } while (newPrice < 0);
-            it->price = newPrice;
-        }
-        else if (userChoice == 2)
-        {
-            cout << "No changes made." << endl;
-        }
-
-        cout << "\n===========================================\n"
-             << "Current stock: " << it->stock << endl
-             << "============================================\n\n";
-        getUserChoice(userChoice);
-
-        if (userChoice == 1)
-        {
-            do
-            {
-                cout << "Enter product stock to update: ";
-                validateInput(newStock);
-                if (newStock < 0)
-                {
-                    cout << "\n============================================\n"
-                         << "======ERROR: Stock Can't be Less tha 0======\n"
-                         << "============================================\n";
-                }
-
-            } while (newStock < 0);
-            it->stock = newStock;
-        }
-        else if (userChoice == 2)
-        {
-            cout << "No changes made." << endl;
-        }
-
-        cout << "\n===========================================\n"
-             << "Current product Measuring Units: " << it->Units << endl
-             << "============================================\n";
-        getUserChoice(userChoice);
-
-        if (userChoice == 1)
-        {
-            do
-            {
-                cout << "Enter product Unit to update (Abbreviation Ex. lbs, kg): ";
-                std::getline(cin, newUnits);
-                it->Units = newUnits;
-                if (it->Units.length() > 5)
-                {
-                    cout << "\n=========================================================\n"
-                         << "=====ERROR: Units Can't have more than 5 characters======\n"
-                         << "=========================================================\n";
-                }
-            } while (it->Units.length() > 5);
-        }
-        else if (userChoice == 2)
-        {
-            cout << "No changes made." << endl;
-        }
-    }
-    else
-    {
-        cout << "\n=======================================\n"
-             << "=========ERROR: ID not found=========\n"
-             << "=========================================\n";
-    }
-}
-
-// Harrys Santiago Santana
-void printInventory(vector<Product> &userProducts)
+void showFullInventory(const vector<Product> &userProducts)
 {
     cout << "\n"
          << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
@@ -427,18 +236,240 @@ void printInventory(vector<Product> &userProducts)
 
     cout << "===============================================================================================\n"; // Second row of inventory (Divider Line)
 
-    for (auto &product : userProducts) // Third row of inventory (All Products)
+    for (const auto &product : userProducts) // Third row of inventory (All Products)
     {
         cout << "| " << std::setw(6) << product.idNum
              << "| " << std::setw(20) << product.name
              << "| " << std::setw(20) << product.category
              << "| " << std::setw(15) << product.stock
-             << "| " << std::setw(15) << product.Units
+             << "| " << std::setw(15) << product.unit
              << "| " << std::setw(0) << "$"
              << std::setw(15) << std::fixed << std::setprecision(2) << product.price
              << std::endl;
     }
     cout << "===============================================================================================\n"; // Fourth row of inventory (End Line)
+}
+
+void showProductHeader()
+{
+    cout << "\n"
+         << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
+         << "| " << std::setw(20) << "Name"
+         << "| " << std::setw(20) << "Category"
+         << "| " << std::setw(15) << "Stock"
+         << "| " << std::setw(15) << "Units"
+         << "| " << std::setw(15) << "Price"
+         << std::endl;
+
+    cout << "===============================================================================================\n"; // Second row of inventory (Divider Line)
+}
+
+// Keven Paulino Ferrer
+void addProduct(vector<Product> &userProducts)
+{
+    Product newProduct;
+    char continuar;
+
+    do
+    {
+        clearScreen();
+        cout << "\n===========================================\n"
+             << "========Inventory Management System========\n"
+             << "=================Add Product===============\n";
+
+        do
+        {
+            cout << "\nEnter Identification Number (----): ";
+            std::getline(cin, newProduct.idNum);
+            validateIdLength(newProduct.idNum);
+
+            // Harrys Santiago Santana
+            auto it = std::find_if(userProducts.begin(), userProducts.end(), [&newProduct](const Product &userProduct)
+                                   { return userProduct.idNum == newProduct.idNum; });
+
+            if (it != userProducts.end())
+            {
+                clearScreen();
+                cout << "\n================================================\n"
+                     << "=======ERROR: ID " << it->idNum << " Its already in Use========\n"
+                     << "================================================\n";
+                newProduct.idNum = "";
+            }
+        } while (newProduct.idNum.length() != ID_LENGTH);
+
+        cout << "Enter Name of the Product: ";
+        validateStringInput(newProduct.name);
+        validateNameLength(newProduct.name);
+
+        cout << "Enter the category (food, drink, etc...): ";
+        validateStringInput(newProduct.category);
+        validateCategoryLength(newProduct.category);
+
+        cout << "Enter the Price of the Product:";
+        validateInput(newProduct.price);
+        validatePrice(newProduct.price);
+        cin.ignore();
+
+        cout << "Enter the Amount in Stock:";
+        validateInput(newProduct.stock);
+        validateStock(newProduct.stock);
+        cin.ignore();
+
+        cout << "Enter Unit  of measurement (units, lbs, kg, etc...): ";
+        validateStringInput(newProduct.unit);
+        validateUnitLength(newProduct.unit);
+
+        userProducts.push_back(newProduct);
+        clearScreen();
+
+        cout << "Product [" << newProduct.idNum << "] successfully added.\n";
+
+        showProductHeader();
+        cout << "| " << std::setw(6) << newProduct.idNum
+             << "| " << std::setw(20) << newProduct.name
+             << "| " << std::setw(20) << newProduct.category
+             << "| " << std::setw(15) << newProduct.stock
+             << "| " << std::setw(15) << newProduct.unit
+             << "| " << std::setw(0) << "$"
+             << std::setw(15) << std::fixed << std::setprecision(2) << newProduct.price
+             << "\n\n";
+
+        cout << "Do You Wish to Continue Adding Products (Y/N): ";
+        validateInput(continuar);
+        continuar = toupper(continuar);
+        if (continuar == 'N')
+        {
+            clearScreen();
+            break;
+        }
+    } while (continuar == 'Y');
+}
+
+// Harrys Santiago Santana
+void updateProduct(vector<Product> &userProducts)
+{
+    // Create a variable to search if 'id' is = to 'idNum' on userProducts
+    string id;
+    int userChoice;
+
+    auto PrintHeader = []()
+    {
+        cout << "\n===========================================\n"
+             << "========Inventory Management System========\n"
+             << "==============Updating Product=============\n";
+    };
+
+    clearScreen();
+    PrintHeader();
+    cout << "\nEnter Product ID to update: ";
+    validateStringInput(id);
+    validateIdLength(id);
+
+    // Search the product in vector 'userProduct' by ID
+    auto it = find_if(userProducts.begin(), userProducts.end(), [&id](const Product &userProduct)
+                      { return userProduct.idNum == id; });
+
+    // If product is found, proceed to update its details
+    if (it != userProducts.end())
+    {
+        int menuChoice;
+        string newName;
+        string newCategory;
+        string newUnit;
+        double newStock;
+        double newPrice;
+
+        do
+        {
+            // Show current product details
+            clearScreen();
+            cout << "\n===========================================\n"
+                 << "========Inventory Management System========\n"
+                 << "==============Updating Product=============\n"
+                 << "\nCurrent Product Details: \n";
+            auto showProductDetails = [](auto it)
+            {
+                showProductHeader();
+
+                cout << "| " << std::setw(6) << it->idNum
+                     << "| " << std::setw(20) << it->name
+                     << "| " << std::setw(20) << it->category
+                     << "| " << std::setw(15) << it->stock
+                     << "| " << std::setw(15) << it->unit
+                     << "| " << std::setw(0) << "$"
+                     << std::setw(15) << std::fixed << std::setprecision(2) << it->price
+                     << "\n\n";
+            };
+
+            showProductDetails(it);
+            cout << "What would you like to update?\n\n"
+                 << "1. Name\n"
+                 << "2. Category\n"
+                 << "3. Stock\n"
+                 << "4. Unit\n"
+                 << "5. Price\n"
+                 << "6. Exit\n\n"
+                 << "Enter your choice: ";
+            validateInput(menuChoice);
+            cin.ignore();
+            clearScreen();
+            if (menuChoice > 0 && menuChoice < 6)
+            {
+                PrintHeader();
+                showProductDetails(it);
+            }
+
+            switch (menuChoice)
+            {
+            case 1:
+                cout << "Enter new name: ";
+                validateStringInput(newName);
+                validateNameLength(newName);
+                it->name = newName;
+                break;
+            case 2:
+                cout << "Enter new category: ";
+                validateStringInput(newCategory);
+                validateCategoryLength(newCategory);
+                it->category = newCategory;
+                break;
+            case 3:
+                cout << "Enter new stock: ";
+                validateInput(newStock);
+                validateStock(newStock);
+                cin.ignore();
+                it->stock = newStock;
+                break;
+            case 4:
+                cout << "Enter new unit: ";
+                validateStringInput(newUnit);
+                validateUnitLength(newUnit);
+                it->unit = newUnit;
+                break;
+            case 5:
+                cout << "Enter new price: ";
+                validateInput(newPrice);
+                validatePrice(newPrice);
+                cin.ignore();
+                it->price = newPrice;
+                break;
+            case 6:
+                cout << "Exiting update menu...\n";
+                cout << "Product [" << it->idNum << "] successfully updated.\n";
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+                break;
+            }
+        } while (menuChoice != 6);
+    }
+    else
+    {
+        clearScreen();
+        cout << "\n=========================================\n"
+             << "=========ERROR: ID not found=============\n"
+             << "=========================================\n";
+    }
 }
 
 // Miguel Monsalve Valencia && Optimized_by @Harrys Santiago Santana
@@ -452,15 +483,21 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
 
     do
     {
-        cout << "\n===========================================\n"
-             << "========Inventory Management System========\n"
-             << "==============Deleting Product=============\n";
+        clearScreen();
+        auto printHeader = []()
+        {
+            cout << "\n===========================================\n"
+                 << "========Inventory Management System========\n"
+                 << "==============Deleting Product=============\n\n";
+        };
         do
         {
-            cout << "1- Delete product\n"
-                    "2- Clear Inventory\n"
-                    "3- Exit \n"
-                    "Enter Your Choice: ";
+            printHeader();
+            cout
+                << "1. Delete product\n"
+                   "2. Clear Inventory\n"
+                   "3. Exit \n\n"
+                   "Enter Your Choice: ";
 
             validateInput(answer);
             cin.ignore();
@@ -478,6 +515,8 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
         switch (answer)
         {
         case 1: // delete product by id
+            clearScreen();
+            printHeader();
             cout << "Enter the ID of the product to delete: ";
 
             validateStringInput(itemId.idNum);
@@ -491,27 +530,18 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
                     // Harrys Santiago Santana
                     found = true;
 
-                    cout << "\n===========================================\n"
-                         << "========Inventory Management System========\n"
-                         << "==============Deleting Product=============\n\n"
-                         << "The following product will be deleted:\n";
+                    clearScreen();
+                    printHeader();
 
-                    cout << "\n"
-                         << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
-                         << "| " << std::setw(20) << "Name"
-                         << "| " << std::setw(20) << "Category"
-                         << "| " << std::setw(15) << "Stock"
-                         << "| " << std::setw(15) << "Units"
-                         << "| " << std::setw(15) << "Price"
-                         << std::endl;
+                    cout << "Product [" << userProducts.at(i).idNum << "] will be deleted:\n";
 
-                    cout << "===============================================================================================\n"; // Second row of inventory (Divider Line)
+                    showProductHeader();
 
                     cout << "| " << std::setw(6) << userProducts.at(i).idNum
                          << "| " << std::setw(20) << userProducts.at(i).name
                          << "| " << std::setw(20) << userProducts.at(i).category
                          << "| " << std::setw(15) << userProducts.at(i).stock
-                         << "| " << std::setw(15) << userProducts.at(i).Units
+                         << "| " << std::setw(15) << userProducts.at(i).unit
                          << "| " << std::setw(0) << "$"
                          << std::setw(15) << std::fixed << std::setprecision(2) << userProducts.at(i).price
                          << "\n\n";
@@ -526,11 +556,18 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
                     if (confirm == 'Y')
                     {
                         userProducts.erase(userProducts.begin() + i); // remove the product
-                        cout << "Product successfully deleted." << endl;
+
+                        clearScreen();
+                        cout << "\n===========================================\n"
+                             << "======== Product Successfully Deleted =====\n"
+                             << "===========================================\n";
                     }
-                    else if (clearInv == 'N')
+                    else if (confirm == 'N')
                     {
-                        cout << "Deletion cancelled." << endl;
+                        clearScreen();
+                        cout << "\n===========================================\n"
+                             << "============ Deletion Cancelled ===========\n"
+                             << "===========================================\n";
                         break;
                     }
                     else
@@ -541,7 +578,7 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
                 }
             }
 
-            if (found == false) //
+            if (!found) //
             {
                 cout << "\n=========================================\n"
                      << "===========ERROR: ID not found===========\n"
@@ -550,66 +587,83 @@ void deleteProduct(vector<Product> &userProducts, bool inventoryEmpty = false)
             }
             return;
         case 2: // delete all inventory
+            clearScreen();
             cout << "\nWARNING: YOU ARE ABOUT TO DELETE ALL INVENTORY.\n";
-            printInventory(userProducts);
+            showFullInventory(userProducts);
             cout << "\nAre you sure to delete all? [Y/N]: ";
             cin >> clearInv;
             clearInv = toupper(clearInv);
             cin.ignore(1000, '\n');
             if (clearInv == 'Y')
             {
+                clearScreen();
                 userProducts.clear();
-                cout << "Inventory successfully cleared." << endl;
+                cout << "\n===========================================\n"
+                     << "======== Inventory Successfully Cleared ===\n"
+                     << "===========================================\n";
+                return;
             }
             else if (clearInv == 'N')
             {
-                cout << "Clearing inventory cancelled." << endl;
+                cout << "\n===========================================\n"
+                     << "========== Clearing Cancelled =============\n"
+                     << "===========================================\n";
                 break;
             }
             else
             {
+                clearScreen();
                 cout << "ERROR: Invalid input. Please try again.\n";
                 break;
             }
         case 3:
+            clearScreen();
             cout << "\nExiting delete menu...\n";
             break;
         }
-
     } while (answer != 3); // Exit the delete menu
 }
 
 // Keven Paulino Ferrer
-void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &searchProduct, int searchChoice)
+void searchBy_Category_Name_id(const vector<Product> &userProducts, vector<Product> &searchProduct, int searchChoice)
 {
+
+    auto printHeader = []()
+    {
+        cout << "==============================================\n"
+             << "=========Inventory Management System==========\n"
+             << "================Search Products===============\n";
+    };
+
     if (searchChoice == 1) // if it was by Id
     {
         // Harrys Santiago Santana
         string id;
-        cout << "Enter Id: ";
+        printHeader();
+        cout << "\nEnter Product ID to search: ";
         std::getline(cin, id);
+        validateIdLength(id);
+
         // Iteration through userProducts to find products that match 'ID'
-        auto it = find_if(userProducts.begin(), userProducts.end(), [&id](Product &matchedProduct)
+        auto it = find_if(userProducts.begin(), userProducts.end(), [&id](const Product &matchedProduct)
                           { return matchedProduct.idNum == id; });
 
         if (it != userProducts.end()) // If found
         {
+            // Harrys Santiago Santana
+
+            clearScreen();
+
+            cout << "Product [" << it->idNum << "] Details:\n";
+
+            showProductHeader();
+
             cout << "\n"
-                 << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
-                 << "| " << std::setw(20) << "Name"
-                 << "| " << std::setw(20) << "Category"
-                 << "| " << std::setw(15) << "Stock"
-                 << "| " << std::setw(15) << "Units"
-                 << "| " << std::setw(15) << "Price"
-                 << std::endl;
-
-            cout << "======================================================================================================\n";
-
-            cout << "| " << std::setw(6) << it->idNum
+                 << "| " << std::setw(6) << it->idNum
                  << "| " << std::setw(20) << it->name
                  << "| " << std::setw(20) << it->category
                  << "| " << std::setw(15) << it->stock
-                 << "| " << std::setw(15) << it->Units
+                 << "| " << std::setw(15) << it->unit
                  << "| " << std::setw(0) << "$"
                  << std::setw(15) << std::fixed << std::setprecision(2) << it->price
                  << std::endl;
@@ -626,8 +680,10 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
     else if (searchChoice == 2) // if search by category
     {
         string userCategory;
-        cout << "Enter Category: ";
-        std::getline(cin, userCategory);
+        printHeader();
+        cout << "\nEnter the category to search: ";
+        validateStringInput(userCategory);
+
         for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
         {
             if (userCategory != userProducts.at(i).category)
@@ -646,8 +702,10 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
     else if (searchChoice == 3) // if search by Name
     {
         string userName;
-        cout << "Enter Name: ";
-        std::getline(cin, userName);
+        printHeader();
+        cout << "\nEnter the name to search: ";
+        validateStringInput(userName);
+
         for (int i = 0; i < userProducts.size(); i++) // look for user input in the vector userProducts
         {
             if (userName != userProducts.at(i).name)
@@ -663,22 +721,34 @@ void searchBy_Category_Name_id(vector<Product> &userProducts, vector<Product> &s
                  << "=========================================\n";
         }
     }
+    if (searchChoice == 2 || searchChoice == 3)
+    {
+        clearScreen();
+        printHeader();
+        cout << "\nSearch Results: \n";
+        if (!searchProduct.empty())
+        {
+            showFullInventory(searchProduct);
+        }
+        searchProduct.clear(); // clears vector just in case
+    }
 }
 
 // Keven Paulino Ferrer
-void searchProduct(vector<Product> &userProducts)
+void searchProduct(const vector<Product> &userProducts)
 {
     vector<Product> searchProduct;
     int searchChoice;
     do
     {
+        clearScreen();
         cout << "\n============================================\n"
              << "========Inventory Management System=========\n"
              << "================Search Menu=================\n"
-             << "1. Search by ID \n"
+             << "\n1. Search by ID \n"
              << "2. Search by category \n"
              << "3. Search by Name \n"
-             << "4.Return \n"
+             << "4. Exit \n\n"
              << "Enter your choice: ";
         validateInput(searchChoice);
         cin.ignore();
@@ -687,38 +757,13 @@ void searchProduct(vector<Product> &userProducts)
 
     if (searchChoice != 4)
     {
+        clearScreen();
         searchBy_Category_Name_id(userProducts, searchProduct, searchChoice);
     }
-
-    if (searchChoice == 2 || searchChoice == 3)
+    else if (searchChoice == 4)
     {
-        if (!searchProduct.empty())
-        {
-            // Harrys Santiago Santana
-            cout << std::left << "| " << std::setw(6) << "ID" // First row of inventory (Header)
-                 << "| " << std::setw(20) << "Name"
-                 << "| " << std::setw(20) << "Category"
-                 << "| " << std::setw(15) << "Stock"
-                 << "| " << std::setw(15) << "Units"
-                 << "| " << std::setw(15) << "Price"
-                 << std::endl;
-
-            cout << "=================================================================================================\n";
-            // Keven Paulino Ferrer
-            for (Product Search : searchProduct)
-            {
-                // Harrys Santiago Santana
-                cout << "| " << std::setw(6) << Search.idNum
-                     << "| " << std::setw(20) << Search.name
-                     << "| " << std::setw(20) << Search.category
-                     << "| " << std::setw(15) << Search.stock
-                     << "| " << std::setw(15) << Search.Units
-                     << "| " << std::setw(0) << "$"
-                     << std::setw(15) << std::fixed << std::setprecision(2) << Search.price
-                     << std::endl;
-            }
-        }
-        searchProduct.clear(); // clears vector just in case
+        clearScreen();
+        cout << "Exiting search menu...\n";
     }
 }
 
@@ -730,16 +775,6 @@ int main()
     std::ofstream Myfile("products.txt", std::ios::app); // to create the file ( std::ios::app  = to not overwrite)
     Myfile.close();
     readFile(userProducts);
-    std::cout << R"(
-  _____                      _                     __  __                                              _      _____           _                 
- |_   _|                    | |                   |  \/  |                                            | |    / ____|         | |                
-   | |  _ ____   _____ _ __ | |_ ___  _ __ _   _  | \  / | __ _ _ __   __ _  __ _ _ __ ___   ___ _ __ | |_  | (___  _   _ ___| |_ ___ _ __ ____
-   | | | '_ \ \ / / _ | '_ \| __/ _ \| '__| | | | | |\/| |/ _` | '_ \ / _` |/ _` | '_ ` _ \ / _ | '_ \| __|  \___ \| | | / __| __/ _ | '_ ` _ _|
-  _| |_| | | \ V |  __| | | | || (_) | |  | |_| | | |  | | (_| | | | | (_| | (_| | | | | | |  __| | | | |_   ____) | |_| \__ | ||  __| | | | | |
- |_____|_| |_|\_/ \___|_| |_|\__\___/|_|   \__, | |_|  |_|\__,_|_| |_|\__,_|\__, |_| |_| |_|\___|_| |_|\__| |_____/ \__, |___/\__\___|_| |_| |_|
-                                            __/ |                            __/ |                                   __/ |                      
-                                           |___/                            |___/                                   |___/                       
-)";
     do
     {
         cout << "\n============================================\n"
@@ -788,13 +823,19 @@ int main()
         case 5:
             if (!userProducts.empty())
             {
-                printInventory(userProducts);
+                clearScreen();
+                cout << "===========================================\n"
+                     << "========Inventory Management System========\n"
+                     << "=================All Products==============\n";
+                showFullInventory(userProducts);
             }
             break;
         case 6:
+            clearScreen();
             cout << "Exiting program...\n";
             break;
         default:
+            clearScreen();
             cout << "Invalid choice. Please try again.\n";
             break;
         }
